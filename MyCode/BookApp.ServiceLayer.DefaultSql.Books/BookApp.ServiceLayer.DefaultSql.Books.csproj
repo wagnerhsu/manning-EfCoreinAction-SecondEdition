@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EfCore.GenericServices" Version="5.1.0" />
+    <PackageReference Include="GenericServices.StatusGeneric" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookApp.Domain.Books\BookApp.Domain.Books.csproj" />
+    <ProjectReference Include="..\BookApp.Persistance.EfCoreSql.Books\BookApp.Persistence.EfCoreSql.Books.csproj" />
+    <ProjectReference Include="..\BookApp.ServiceLayer.DisplayCommon.Books\BookApp.ServiceLayer.DisplayCommon.Books.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EfCore.GenericEventRunner" Version="2.3.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookApp.Domain.Books\BookApp.Domain.Books.csproj" />
+    <ProjectReference Include="..\BookApp.Persistence.Common\BookApp.Persistence.Common.csproj" />
+  </ItemGroup>
+
+</Project>
