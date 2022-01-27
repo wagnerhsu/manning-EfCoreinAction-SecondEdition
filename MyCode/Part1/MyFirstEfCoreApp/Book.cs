@@ -14,7 +14,6 @@ namespace MyFirstEfCoreApp
         public DateTime PublishedOn { get; set; }
         public int AuthorId { get; set; } //#B
 
-
         public Author Author { get; set; } //#C
     }
 

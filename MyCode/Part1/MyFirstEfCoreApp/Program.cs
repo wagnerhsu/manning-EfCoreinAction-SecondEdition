@@ -23,20 +23,26 @@ namespace MyFirstEfCoreApp
                     case "l":
                         Commands.ListAll();
                         break;
+
                     case "u":
                         Commands.ChangeWebUrl();
                         break;
+
                     case "l -l":
                         Commands.ListAllWithLogs();
                         break;
+
                     case "u -l":
                         Commands.ChangeWebUrlWithLogs();
                         break;
+
                     case "r":
                         Commands.WipeCreateSeed(false);
                         break;
+
                     case "e":
                         return;
+
                     default:
                         Console.WriteLine("Unknown command.");
                         break;

@@ -27,6 +27,7 @@ namespace MyFirstEfCoreApp
                 }
             }
         }
+
         /**************************************************************
         #A We create the application's DbContext through which all database accesses are done
         #B This reads all the books. The AsNoTracking() says this is a read-only access
@@ -51,6 +52,7 @@ namespace MyFirstEfCoreApp
 
             ListAll(); //#F
         }
+
         /**************************************************************
         #A We read in from the console the new url
         #B We make sure the author information is 'eager' loaded with the book
@@ -67,7 +69,7 @@ namespace MyFirstEfCoreApp
             using (var db = new AppDbContext())
             {
                 var serviceProvider = db.GetInfrastructure();
-                var loggerFactory = (ILoggerFactory) serviceProvider.GetService(typeof(ILoggerFactory));
+                var loggerFactory = (ILoggerFactory)serviceProvider.GetService(typeof(ILoggerFactory));
                 loggerFactory.AddProvider(new MyLoggerProvider(logs));
 
                 foreach (var entity in
@@ -101,7 +103,7 @@ namespace MyFirstEfCoreApp
             using (var db = new AppDbContext())
             {
                 var serviceProvider = db.GetInfrastructure();
-                var loggerFactory = (ILoggerFactory) serviceProvider.GetService(typeof(ILoggerFactory));
+                var loggerFactory = (ILoggerFactory)serviceProvider.GetService(typeof(ILoggerFactory));
                 loggerFactory.AddProvider(new MyLoggerProvider(logs));
 
                 var singleBook = db.Books
