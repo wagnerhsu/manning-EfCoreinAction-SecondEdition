@@ -12,14 +12,14 @@ namespace BookApp.Persistence.EfCoreSql.Books
         public static void ChangeChecker(this DbContext context)
         {
             foreach (var entry in context.ChangeTracker.Entries()
-                .Where(e =>                          
+                .Where(e =>
                      e.State == EntityState.Added || e.State == EntityState.Modified))
             {
                 var tracked = entry.Entity as ICreatedUpdated;         //#D
                 tracked?.LogAddUpdate(entry.State == EntityState.Added);
                 if (entry.State == EntityState.Modified)
                 {
-                    entry.Property(nameof(ICreatedUpdated.LastUpdatedUtc))  
+                    entry.Property(nameof(ICreatedUpdated.LastUpdatedUtc))
                         .IsModified = true;
                 }
             }

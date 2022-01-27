@@ -34,7 +34,6 @@ namespace BookApp.Infrastructure.Books.Seeding
             var publishedOn = publishedDate ?? expectedPublishDate;
             var price = productOfferings.Select(x => x.price).Max();
 
-
             throw new NotImplementedException();
         }
     }
@@ -45,5 +44,4 @@ namespace BookApp.Infrastructure.Books.Seeding
         public int id { get; set; }
         public string productType { get; set; }
     }
-
 }

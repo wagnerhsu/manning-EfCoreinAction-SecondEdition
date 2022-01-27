@@ -3,15 +3,17 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BookApp.Domain.Books;
 
 namespace BookApp.Infrastructure.Books.CosmosDb
 {
     public interface IBookToCosmosBookService
     {
         Task AddCosmosBookAsync(int bookId);
+
         Task UpdateCosmosBookAsync(int bookId);
+
         Task DeleteCosmosBookAsync(int bookId);
+
         Task UpdateManyCosmosBookAsync(List<int> bookIds);
     }
 }

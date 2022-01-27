@@ -21,6 +21,5 @@ namespace BookApp.Infrastructure.Books.CachedValues.EventHandlers
 
             return null;
         }
-
     }
 }

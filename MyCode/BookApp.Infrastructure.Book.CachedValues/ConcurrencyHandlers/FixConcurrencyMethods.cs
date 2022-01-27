@@ -44,8 +44,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
                 && Math.Abs(previousAverageVotes -                //#E
                     bookThatCausedConcurrency.ReviewsAverageVotes) < 0.0001) //#E
                 return;                                           //#E
-            
-            
+
             //There was a concurrency issue with the Review cache values
             //In this case we need recompute the Review cache including the bookThatCausedConcurrency changes
 
@@ -54,7 +53,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
                 previousAverageVotes * previousCount); //#F
 
             //This gets the change that the event was trying at make to the cached values
-            var countChange = 
+            var countChange =
                 bookBeingWrittenOut.ReviewsCount         //#G
                 - previousCount;           //#G
             var starsChange = Math.Round(                //#G
@@ -88,6 +87,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
                 bookThatCausedConcurrency             //#J
                     .ReviewsAverageVotes;             //#J
         }
+
         /**********************************************************************
         #A This method handles concurrency errors in the Reviews cached values
         #B This parameter is the Book from the database that caused the concurrency issue
@@ -103,7 +103,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
 
         /// <summary>
         /// This recomputes the AuthorsOrdered string from the database. But to get the correct answer
-        /// we need to use Find, as that will return any entity that is in the DbContext. This picks up the change(s) applied 
+        /// we need to use Find, as that will return any entity that is in the DbContext. This picks up the change(s) applied
         /// </summary>
         /// <param name="bookThatCausedConcurrency"></param>
         /// <param name="bookBeingWrittenOut"></param>
@@ -149,13 +149,14 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
                 .OriginalValue =                           //#J
                 bookThatCausedConcurrency.AuthorsOrdered;  //#J
         }
+
         /**********************************************************************
         #A This method handles concurrency errors in the AuthorsOrdered cached value
         #B This parameter is the Book from the database that caused the concurrency issue
         #C This parameter is the Book you were trying to update
         #D This gets the previous AuthorsOrdered string before the event updated it
         #E If the previous AuthorsOrdered match the current database AuthorsOrdered then there is no AuthorsOrdered concurrency issue, so it returns
-        #F THis gets the AuthorIds for each Author linked to this Book in the correct order 
+        #F THis gets the AuthorIds for each Author linked to this Book in the correct order
         #G This gets the Name of each Author using the Find method
         #H Then it is simple to created a comma delimited list of the authors
         #I From this you can set the AuthorsOrdered cached value with the combined values

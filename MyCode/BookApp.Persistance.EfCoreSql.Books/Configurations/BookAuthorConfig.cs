@@ -12,7 +12,6 @@ namespace BookApp.Persistence.EfCoreSql.Books.Configurations
         public void Configure(EntityTypeBuilder<BookAuthor> entity)
         {
             entity.HasKey(p => new { p.BookId, p.AuthorId });
-
         }
     }
 }

@@ -13,11 +13,11 @@ namespace BookApp.UI.Controllers
 {
     public class CosmosEfController : BaseTraceController
     {
-        public async Task<IActionResult> Index (SortFilterPageOptionsNoCount options, [FromServices] ICosmosEfListNoSqlBooksService service)
+        public async Task<IActionResult> Index(SortFilterPageOptionsNoCount options, [FromServices] ICosmosEfListNoSqlBooksService service)
         {
             var output = await service.SortFilterPageAsync(options);
             SetupTraceInfo();
-            return View(new CosmosEfBookListCombinedDto(options, output));              
+            return View(new CosmosEfBookListCombinedDto(options, output));
         }
 
         /// <summary>
@@ -27,15 +27,14 @@ namespace BookApp.UI.Controllers
         /// <param name="service"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<JsonResult> GetFilterSearchContent    
-            (SortFilterPageOptionsNoCount options, [FromServices]ICosmosEfBookFilterDropdownService service)         
+        public async Task<JsonResult> GetFilterSearchContent
+            (SortFilterPageOptionsNoCount options, [FromServices] ICosmosEfBookFilterDropdownService service)
         {
             var traceIdent = HttpContext.TraceIdentifier;
             var dropdown = await service.GetFilterDropDownValuesAsync(options.FilterBy);
-            return Json(                            
+            return Json(
                 new TraceIndentGeneric<IEnumerable<DropdownTuple>>(
-                traceIdent, dropdown));            
+                traceIdent, dropdown));
         }
-
     }
 }

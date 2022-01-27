@@ -6,6 +6,7 @@ namespace BookApp.Domain.Books.SupportTypes
     public interface ISoftDelete
     {
         bool SoftDeleted { get; }
+
         void AlterSoftDelete(bool softDeleted);
     }
 }

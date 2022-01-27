@@ -24,12 +24,12 @@ namespace BookApp.ServiceLayer.CosmosEf.Books.Services
         public async Task<IList<CosmosBook>> SortFilterPageAsync(SortFilterPageOptionsNoCount options)
         {
             var booksFound = await _context.Books
-                .AsNoTracking()                                             
-                .OrderBooksBy(options.OrderByOptions)  
-                .FilterBooksBy(options.FilterBy,       
+                .AsNoTracking()
+                .OrderBooksBy(options.OrderByOptions)
+                .FilterBooksBy(options.FilterBy,
                                options.FilterValue)
-                .Page(options.PageNum - 1,options.PageSize)
-                .ToListAsync();   
+                .Page(options.PageNum - 1, options.PageSize)
+                .ToListAsync();
 
             options.SetupRestOfDto(booksFound.Count);
 
@@ -38,5 +38,4 @@ namespace BookApp.ServiceLayer.CosmosEf.Books.Services
             return booksFound;
         }
     }
-
 }

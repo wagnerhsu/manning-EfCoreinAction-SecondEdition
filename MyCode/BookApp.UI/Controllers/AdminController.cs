@@ -14,7 +14,6 @@ using BookApp.Infrastructure.LoggingServices;
 using BookApp.Persistence.EfCoreSql.Books;
 using BookApp.ServiceLayer.DefaultSql.Books.Dtos;
 using BookApp.UI.HelperExtensions;
-using BookApp.UI.Models;
 using GenericServices;
 using GenericServices.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +35,7 @@ namespace BookApp.UI.Controllers
             }
 
             public string Message { get; }
-            public string ControllerName { get; } 
+            public string ControllerName { get; }
         }
 
         public AdminController(BookAppSettings settings)
@@ -44,13 +43,12 @@ namespace BookApp.UI.Controllers
             _backToDisplayController = settings.GetDisplayControllerBasedOnTheMenuSet();
         }
 
-
-        public async Task<IActionResult> ChangePubDate(int id, [FromServices]ICrudServicesAsync<BookDbContext> service) 
+        public async Task<IActionResult> ChangePubDate(int id, [FromServices] ICrudServicesAsync<BookDbContext> service)
         {
-            Request.ThrowErrorIfNotLocal(); 
-            var dto = await service.ReadSingleAsync<ChangePubDateDto>(id); 
+            Request.ThrowErrorIfNotLocal();
+            var dto = await service.ReadSingleAsync<ChangePubDateDto>(id);
             SetupTraceInfo();
-            return View(dto); 
+            return View(dto);
         }
 
         [HttpPost]
@@ -129,7 +127,6 @@ namespace BookApp.UI.Controllers
             return View(dto);
         }
 
-
         public async Task<IActionResult> AddBookReview(int id, [FromServices] ICrudServicesAsync<BookDbContext> service)
         {
             Request.ThrowErrorIfNotLocal();
@@ -177,7 +174,7 @@ namespace BookApp.UI.Controllers
             Request.ThrowErrorIfNotLocal();
 
             var softDeletedBooks = await service.GetSoftDeletedEntries<Book>()
-                .Select(x => new SimpleBookList{BookId = x.BookId, LastUpdatedUtc = x.LastUpdatedUtc, Title = x.Title})
+                .Select(x => new SimpleBookList { BookId = x.BookId, LastUpdatedUtc = x.LastUpdatedUtc, Title = x.Title })
                 .ToListAsync();
 
             SetupTraceInfo();
@@ -201,13 +198,13 @@ namespace BookApp.UI.Controllers
         {
             Request.ThrowErrorIfNotLocal();
             SetupTraceInfo();
-            return View(new CheckFixInputDto{ FixBadCacheValues = true, LookingBack = new TimeSpan(0,1,00,0)});
+            return View(new CheckFixInputDto { FixBadCacheValues = true, LookingBack = new TimeSpan(0, 1, 00, 0) });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CacheCheckFix(CheckFixInputDto dto, CancellationToken cancellationToken, 
-            [FromServices]ICheckFixCacheValuesService service)
+        public async Task<IActionResult> CacheCheckFix(CheckFixInputDto dto, CancellationToken cancellationToken,
+            [FromServices] ICheckFixCacheValuesService service)
         {
             Request.ThrowErrorIfNotLocal();
             if (!ModelState.IsValid)
@@ -216,7 +213,7 @@ namespace BookApp.UI.Controllers
             }
 
             var scanFrom = DateTime.UtcNow.Subtract(dto.LookingBack);
-            var notes = await service.RunCheckAsync(scanFrom, dto.FixBadCacheValues, cancellationToken );
+            var notes = await service.RunCheckAsync(scanFrom, dto.FixBadCacheValues, cancellationToken);
             SetupTraceInfo();
             return View("CacheCheckFixResult", notes);
         }
@@ -226,6 +223,5 @@ namespace BookApp.UI.Controllers
             var timingLogs = HttpTimingLog.GetTimingStats(5);
             return View(timingLogs);
         }
-
     }
 }

@@ -1,14 +1,14 @@
 ﻿/**********************************************************************
  * BookList handles the book list, especially the 'filter by' part
- * 
+ *
  * First created: 2016/09/22 - updated 2020/3/30
- * 
+ *
  * Under the MIT License (MIT)
  *
  * Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
  **********************************************************************/
 
-var BookList = (function($, loggingDisplay) {
+var BookList = (function ($, loggingDisplay) {
     'use strict';
 
     var filterApiUrl = null;
@@ -34,7 +34,7 @@ var BookList = (function($, loggingDisplay) {
                 url: filterApiUrl,
                 data: { FilterBy: filterByValue }
             })
-                .done(function(indentAndResult) {
+                .done(function (indentAndResult) {
                     if (!ignoreTrace) {
                         //Only update the looging if not the main load
                         loggingDisplay.newTrace(indentAndResult.traceIdentifier, indentAndResult.numLogs);
@@ -56,7 +56,7 @@ var BookList = (function($, loggingDisplay) {
                     $fsearch.val(filterValue);
                     enableDisableFilterDropdown($fsearch, true);
                 })
-                .fail(function() {
+                .fail(function () {
                     alert("error");
                 });
         }
@@ -69,16 +69,16 @@ var BookList = (function($, loggingDisplay) {
 
     //public parts
     return {
-        initialise: function(filterByValue, filterValue, exFilterApiUrl) {
+        initialise: function (filterByValue, filterValue, exFilterApiUrl) {
             filterApiUrl = exFilterApiUrl;
             loadFilterValueDropdown(filterByValue, filterValue, true);
         },
 
-        sendForm: function(inputElem) {
+        sendForm: function (inputElem) {
             sendForm(inputElem);
         },
 
-        filterByHasChanged: function(filterElem) {
+        filterByHasChanged: function (filterElem) {
             var filterByValue = $(filterElem).find(":selected").val();
             loadFilterValueDropdown(filterByValue);
             if (filterByValue === "0") {
@@ -86,9 +86,8 @@ var BookList = (function($, loggingDisplay) {
             }
         },
 
-        loadFilterValueDropdown: function(filterByValue, filterValue) {
+        loadFilterValueDropdown: function (filterByValue, filterValue) {
             loadFilterValueDropdown(filterByValue, filterValue);
         }
     };
-
 }(window.jQuery, LoggingDisplay));

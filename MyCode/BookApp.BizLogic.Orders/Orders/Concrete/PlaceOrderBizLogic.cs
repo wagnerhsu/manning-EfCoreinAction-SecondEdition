@@ -34,16 +34,16 @@ namespace BookApp.BizLogic.Orders.Orders.Concrete
             if (!dto.AcceptTAndCs)                    //#D
             {
                 return status.AddError("You must accept the T&Cs to place an order.");
-            }                                         
+            }
             if (!dto.LineItems.Any())                 //#D
             {
                 return status.AddError("No items in your basket.");
-            }                                         
+            }
 
             var booksDict = await _dbAccess                 //#E
                 .FindBooksByIdsAsync                        //#E
                      (dto.LineItems.Select(x => x.BookId)); //#E
-            
+
             var linesStatus = FormLineItemsWithErrorChecking //#F
                 (dto.LineItems, booksDict);                  //#F
             if (status.CombineStatuses(linesStatus).HasErrors)//#G
@@ -54,14 +54,15 @@ namespace BookApp.BizLogic.Orders.Orders.Concrete
 
             if (status.CombineStatuses(orderStatus).HasErrors)//#I
                 return status;                                //#I
-                
+
             await _dbAccess.AddAndSave(orderStatus.Result); //#J
-            
+
             return status.SetResult(orderStatus.Result); //#K
         }
+
         /*******************************************************************
         #A This method returns a status with the created Order, which is null if there are no errors
-        #B The PlaceOrderInDto contains a TandC bool and a collection of BookIds and number of books 
+        #B The PlaceOrderInDto contains a TandC bool and a collection of BookIds and number of books
         #C This status is used to gather and errors and, if no errors, return an Order
         #D These validate the user's input
         #E The _dbAccess contains the code to find each book - see listing 4.3
@@ -73,29 +74,29 @@ namespace BookApp.BizLogic.Orders.Orders.Concrete
         #K Finally it returns a successful status with the created Order entity
          ****************************************************************/
 
-        private IStatusGeneric<List<OrderBookDto>>  FormLineItemsWithErrorChecking
-            (IEnumerable<OrderLineItem> lineItems,            
-             IDictionary<int,BookView> booksDict)                 
+        private IStatusGeneric<List<OrderBookDto>> FormLineItemsWithErrorChecking
+            (IEnumerable<OrderLineItem> lineItems,
+             IDictionary<int, BookView> booksDict)
         {
             var status = new StatusGenericHandler<List<OrderBookDto>>();
             var result = new List<OrderBookDto>();
-          
-            foreach (var lineItem in lineItems)  
+
+            foreach (var lineItem in lineItems)
             {
-                if (!booksDict.ContainsKey(lineItem.BookId))           
+                if (!booksDict.ContainsKey(lineItem.BookId))
                     throw new InvalidOperationException(
-                        $"An order failed because book, id = {lineItem.BookId} was missing.");               
+                        $"An order failed because book, id = {lineItem.BookId} was missing.");
 
                 var bookView = booksDict[lineItem.BookId];
-                if (bookView.ActualPrice <= 0)                         
-                    status.AddError($"Sorry, the book '{bookView.Title}' is not for sale.");    
+                if (bookView.ActualPrice <= 0)
+                    status.AddError($"Sorry, the book '{bookView.Title}' is not for sale.");
                 else
                 {
                     //Valid, so add to the order
                     result.Add(new OrderBookDto(bookView, lineItem.NumBooks));
                 }
             }
-            return status.SetResult(result); 
+            return status.SetResult(result);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
 
         public string Title { get; set; }
 
-        [DataType(DataType.Date)]               
+        [DataType(DataType.Date)]
         public DateTime PublishedOn { get; set; }
     }
 }

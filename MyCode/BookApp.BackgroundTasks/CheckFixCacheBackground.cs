@@ -8,7 +8,6 @@ using BookApp.Infrastructure.Books.CachedValues;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace BookApp.BackgroundTasks
 {
@@ -19,7 +18,6 @@ namespace BookApp.BackgroundTasks
 
         private readonly IServiceProvider _services;
         private readonly ILogger<CheckFixCacheBackground> _logger;
-
 
         public CheckFixCacheBackground(
             IServiceProvider services,
@@ -63,6 +61,5 @@ namespace BookApp.BackgroundTasks
 
             return Task.CompletedTask;
         }
-
     }
 }

@@ -8,13 +8,11 @@ using BookApp.UI.HelperExtensions;
 using BookApp.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace BookApp.UI.Controllers
 {
     public class HomeController : BaseTraceController
     {
-
-        public IActionResult Index([FromServices]BookAppSettings settings)
+        public IActionResult Index([FromServices] BookAppSettings settings)
         {
             return View(null, settings.Title);
         }
@@ -55,7 +53,7 @@ namespace BookApp.UI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel
-                { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

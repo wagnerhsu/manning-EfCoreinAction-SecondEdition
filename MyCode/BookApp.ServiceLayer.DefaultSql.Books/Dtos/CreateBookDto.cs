@@ -26,10 +26,11 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
 
         [DataType(DataType.Date)]
         public DateTime PublishedOn { get; set; }
+
         public bool EstimatedDate { get; set; }
         public string Publisher { get; set; }
 
-        [Range(0,1000)]
+        [Range(0, 1000)]
         public decimal Price { get; set; }
 
         public string ImageUrl { get; set; }

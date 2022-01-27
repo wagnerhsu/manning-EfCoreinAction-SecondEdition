@@ -8,13 +8,13 @@ using StatusGeneric;
 
 namespace BookApp.Infrastructure.Books.CachedValues.EventHandlers
 {
-    public class ReviewAddedHandler :                 
+    public class ReviewAddedHandler :
         IBeforeSaveEventHandler<BookReviewAddedEvent> //#A
     {
-        public IStatusGeneric Handle(object callingEntity,//#B 
+        public IStatusGeneric Handle(object callingEntity,//#B
             BookReviewAddedEvent domainEvent)             //#B
         {
-            var book = (Domain.Books.Book) callingEntity; //#C
+            var book = (Domain.Books.Book)callingEntity; //#C
 
             var totalStars = Math.Round(   //#D
                 book.ReviewsAverageVotes   //#D
@@ -29,6 +29,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.EventHandlers
             return null;  //#J
         }
     }
+
     /***********************************************************
     #A This tells the Event Runner that this event should be called when it finds a BookReviewAddedEvent
     #B The Event Runner provides the instance of the calling entity and the event

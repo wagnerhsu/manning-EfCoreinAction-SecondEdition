@@ -13,42 +13,42 @@ namespace BookApp.BizLogic.Orders.BasketServices
     {
         private List<OrderLineItem> _lineItems;
 
-        public CheckoutCookieService(string cookieContent) 
-        {                                                  
-            DecodeCookieString(cookieContent);             
-        } 
+        public CheckoutCookieService(string cookieContent)
+        {
+            DecodeCookieString(cookieContent);
+        }
 
-        public Guid UserId { get; private set; } 
-        public ImmutableList<OrderLineItem> LineItems => _lineItems.ToImmutableList(); 
+        public Guid UserId { get; private set; }
+        public ImmutableList<OrderLineItem> LineItems => _lineItems.ToImmutableList();
 
-        public void AddLineItem(OrderLineItem newItem) 
-        {                                              
-            _lineItems.Add(newItem);                   
-        } 
+        public void AddLineItem(OrderLineItem newItem)
+        {
+            _lineItems.Add(newItem);
+        }
 
-        public void DeleteLineItem(int itemIndex)                        
-        {                                                                
-            if (itemIndex <0 || itemIndex > _lineItems.Count)            
-                throw new                                                
-                    InvalidOperationException("Couldn't find that item"); 
-            _lineItems.RemoveAt(itemIndex);                              
-        } 
+        public void DeleteLineItem(int itemIndex)
+        {
+            if (itemIndex < 0 || itemIndex > _lineItems.Count)
+                throw new
+                    InvalidOperationException("Couldn't find that item");
+            _lineItems.RemoveAt(itemIndex);
+        }
 
-        public void ClearAllLineItems()  
-        {                                
-            _lineItems.Clear();          
-        } 
+        public void ClearAllLineItems()
+        {
+            _lineItems.Clear();
+        }
 
-        public string EncodeForCookie()                  
-        {                                                
-            var sb = new StringBuilder();                
-            sb.Append(UserId.ToString("N"));             
-            foreach (var lineItem in _lineItems)         
-            {                                            
-                sb.AppendFormat(",{0},{1}",              
-                    lineItem.BookId, lineItem.NumBooks); 
-            }                                            
-            return sb.ToString();                        
+        public string EncodeForCookie()
+        {
+            var sb = new StringBuilder();
+            sb.Append(UserId.ToString("N"));
+            foreach (var lineItem in _lineItems)
+            {
+                sb.AppendFormat(",{0},{1}",
+                    lineItem.BookId, lineItem.NumBooks);
+            }
+            return sb.ToString();
         }
 
         //---------------------------------------------------

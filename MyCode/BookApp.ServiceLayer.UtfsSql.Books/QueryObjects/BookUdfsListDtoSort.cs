@@ -8,7 +8,6 @@ using BookApp.ServiceLayer.UdfsSql.Books.Dtos;
 
 namespace BookApp.ServiceLayer.UdfsSql.Books.QueryObjects
 {
-
     public static class BookUdfsListDtoSort
     {
         public static IQueryable<UdfsBookListDto> OrderUdfsBooksBy
@@ -16,20 +15,25 @@ namespace BookApp.ServiceLayer.UdfsSql.Books.QueryObjects
         {
             switch (orderByOptions)
             {
-                case OrderByOptions.SimpleOrder: 
-                    return books.OrderByDescending( 
-                        x => x.BookId); 
-                case OrderByOptions.ByVotes: 
-                    return books.OrderByDescending(x => 
-                        x.ReviewsAverageVotes); 
-                case OrderByOptions.ByPublicationDate: 
-                    return books.OrderByDescending( 
-                        x => x.PublishedOn); 
-                case OrderByOptions.ByPriceLowestFirst: 
-                    return books.OrderBy(x => x.ActualPrice); 
-                case OrderByOptions.ByPriceHighestFirst: 
-                    return books.OrderByDescending( 
-                        x => x.ActualPrice); 
+                case OrderByOptions.SimpleOrder:
+                    return books.OrderByDescending(
+                        x => x.BookId);
+
+                case OrderByOptions.ByVotes:
+                    return books.OrderByDescending(x =>
+                        x.ReviewsAverageVotes);
+
+                case OrderByOptions.ByPublicationDate:
+                    return books.OrderByDescending(
+                        x => x.PublishedOn);
+
+                case OrderByOptions.ByPriceLowestFirst:
+                    return books.OrderBy(x => x.ActualPrice);
+
+                case OrderByOptions.ByPriceHighestFirst:
+                    return books.OrderByDescending(
+                        x => x.ActualPrice);
+
                 default:
                     throw new ArgumentOutOfRangeException(
                         nameof(orderByOptions), orderByOptions, null);

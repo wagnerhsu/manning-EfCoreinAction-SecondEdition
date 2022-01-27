@@ -11,7 +11,6 @@ using BookApp.Domain.Books.SupportTypes;
 using BookApp.Persistence.EfCoreSql.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using StatusGeneric;
 
 namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
 {
@@ -19,7 +18,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
     {
         private readonly BookDbContext _context;
         private readonly ILogger<CheckFixCacheValuesService> _logger;
-        
+
         public CheckFixCacheValuesService(BookDbContext context,
             ILogger<CheckFixCacheValuesService> logger)
         {
@@ -31,15 +30,15 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
         {
             var bookIdsOfChanged = new HashSet<int>();
             bookIdsOfChanged.UnionWith(await FilterByToFrom(
-                    _context.Books, 
+                    _context.Books,
                     fromThisDate)
                     .Select(x => x.BookId).ToListAsync(cancellationToken));
             bookIdsOfChanged.UnionWith(await FilterByToFrom(
-                    _context.Set<Review>(), 
+                    _context.Set<Review>(),
                     fromThisDate)
                     .Select(x => x.BookId).ToListAsync(cancellationToken));
             bookIdsOfChanged.UnionWith(await FilterByToFrom(
-                    _context.Set<BookAuthor>(), 
+                    _context.Set<BookAuthor>(),
                     fromThisDate)
                     .Select(x => x.BookId).ToListAsync(cancellationToken));
             bookIdsOfChanged.UnionWith(await FilterByToFrom(
@@ -47,7 +46,6 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
                     fromThisDate)
                 .SelectMany(x => x.BooksLink
                     .Select(y => y.BookId)).ToListAsync(cancellationToken));
-
 
             var errors = new List<string>();
             var numErrors = 0;
@@ -58,7 +56,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
                     ? $"{numErrors} errors " + (fixBadCacheValues && !cancelled ? "and fixed them" : "(not fixed)")
                     : "no errors";
                 errors.Insert(0, $"Looked at {bookIdsOfChanged.Count} SQL books and found {whatDone}");
-                if(cancelled)
+                if (cancelled)
                     errors.Insert(0, $"CANCELLED");
 
                 return errors;
@@ -76,8 +74,8 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
                     var indent = "    ";
                     foreach (var error in status.Errors)
                     {
-                        _logger.Log(fixBadCacheValues 
-                            ? LogLevel.Warning : LogLevel.Error, 
+                        _logger.Log(fixBadCacheValues
+                            ? LogLevel.Warning : LogLevel.Error,
                             error.ToString());
 
                         errors.Add(indent + error);
@@ -90,7 +88,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
             if (numErrors > 0 && fixBadCacheValues)
                 await _context.SaveChangesAsync(cancellationToken);
 
-            return FormFinalReturn(false); 
+            return FormFinalReturn(false);
         }
 
         private IQueryable<T> FilterByToFrom<T>(DbSet<T> source,

@@ -21,31 +21,33 @@ namespace BookApp.Domain.Books
 
         //Use uninitialized backing fields - this means we can detect if the collection was loaded
         private HashSet<Review> _reviews;
+
         private HashSet<BookAuthor> _authorsLink;
         private HashSet<Tag> _tags;
 
         //-----------------------------------------------
         //ctors/static factory
 
-        private Book() { }   //Needed by EF Core
+        private Book()
+        { }   //Needed by EF Core
 
-        public static IStatusGeneric<Book> CreateBook(      
-            string title, DateTime publishedOn,              
-            bool estimatedDate,                              
+        public static IStatusGeneric<Book> CreateBook(
+            string title, DateTime publishedOn,
+            bool estimatedDate,
             string publisher, decimal price, string imageUrl,
-            ICollection<Author> authors,                     
-            ICollection<Tag> tags = null)                    
+            ICollection<Author> authors,
+            ICollection<Tag> tags = null)
         {
-            var status = new StatusGenericHandler<Book>();  
-            if (string.IsNullOrWhiteSpace(title))         
-                status.AddError(                          
-                    "The book title cannot be empty.");   
+            var status = new StatusGenericHandler<Book>();
+            if (string.IsNullOrWhiteSpace(title))
+                status.AddError(
+                    "The book title cannot be empty.");
 
-            var book = new Book                         
-            {                                           
-                Title = title,                          
-                PublishedOn = publishedOn,              
-                EstimatedDate = estimatedDate,          
+            var book = new Book
+            {
+                Title = title,
+                PublishedOn = publishedOn,
+                EstimatedDate = estimatedDate,
                 Publisher = publisher,
                 OrgPrice = price,
                 ActualPrice = price,
@@ -54,31 +56,31 @@ namespace BookApp.Domain.Books
                 //NOTE: We must NOT initialise the ReviewsCount and the ReviewsAverageVotes as they default to zero
                 AuthorsOrdered = string.Join(", ", authors.Select(x => x.Name)),
 
-                _tags = tags != null           
-                    ? new HashSet<Tag>(tags)   
-                    : new HashSet<Tag>(),      
+                _tags = tags != null
+                    ? new HashSet<Tag>(tags)
+                    : new HashSet<Tag>(),
                 _reviews = new HashSet<Review>()       //We add an empty list on create. I allows reviews to be added when building test data
             };
-            if (authors == null)                                   
-                throw new ArgumentNullException(nameof(authors));  
+            if (authors == null)
+                throw new ArgumentNullException(nameof(authors));
 
-            byte order = 0;                               
-            book._authorsLink = new HashSet<BookAuthor>(  
-                authors.Select(a =>                       
-                    new BookAuthor(book, a, order++)));   
-            if (!book._authorsLink.Any())                             
-                status.AddError(                                      
-                    "You must have at least one Author for a book."); 
-            
+            byte order = 0;
+            book._authorsLink = new HashSet<BookAuthor>(
+                authors.Select(a =>
+                    new BookAuthor(book, a, order++)));
+            if (!book._authorsLink.Any())
+                status.AddError(
+                    "You must have at least one Author for a book.");
+
             if (status.IsValid)
                 book.AddEvent(new BookChangedEvent(BookChangeTypes.Added), EventToSend.DuringSave);
 
-            return status.SetResult(book); 
+            return status.SetResult(book);
         }
 
         /// <summary>
         /// This static factory is used by the BookGenerator when filling the database with test data
-        /// This is designed to work without the GenericEventRunner running 
+        /// This is designed to work without the GenericEventRunner running
         /// </summary>
         public Book(string title, DateTime publishedOn,
             bool estimatedDate, string publisher,
@@ -111,7 +113,6 @@ namespace BookApp.Domain.Books
             AuthorsOrdered = string.Join(", ", authors.Select(x => x.Name));
 
             _tags = new HashSet<Tag>(tags);
-
 
             if (!reviewNumStars.Any()) return; //no reviews to add
 
@@ -214,7 +215,7 @@ namespace BookApp.Domain.Books
         //-----------------------------------------------------
         //DDD methods
 
-        public void SetBookDetails(string description, string aboutAuthor, string aboutReader, 
+        public void SetBookDetails(string description, string aboutAuthor, string aboutReader,
             string aboutTechnology, string whatsInside)
         {
             if (Details == null)
@@ -252,11 +253,11 @@ namespace BookApp.Domain.Books
         public void AddReview(int numStars,   //#B
             string comment, string voterName) //#B
         {
-            if (_reviews == null)                      
-                throw new InvalidOperationException(   
+            if (_reviews == null)
+                throw new InvalidOperationException(
                     "The Reviews collection must be loaded before calling this method");
-            _reviews.Add(new Review(           
-                numStars, comment, voterName));    
+            _reviews.Add(new Review(
+                numStars, comment, voterName));
 
             AddEvent(new BookReviewAddedEvent(numStars, //#C
                 UpdateReviewCachedValues)); //#D
@@ -266,16 +267,16 @@ namespace BookApp.Domain.Books
         //This works with the GenericServices' IncludeThen Attribute to pre-load the Reviews collection
         public void RemoveReview(int reviewId) //#E
         {
-            if (_reviews == null)                    
-                throw new InvalidOperationException( 
+            if (_reviews == null)
+                throw new InvalidOperationException(
                     "The Reviews collection must be loaded before calling this method");
-            var localReview = _reviews.SingleOrDefault(  
-                x => x.ReviewId == reviewId);            
-            if (localReview == null)                  
-                throw new InvalidOperationException(  
+            var localReview = _reviews.SingleOrDefault(
+                x => x.ReviewId == reviewId);
+            if (localReview == null)
+                throw new InvalidOperationException(
                     "The review with that key was not found in the book's Reviews.");
-            _reviews.Remove(localReview);             
-            
+            _reviews.Remove(localReview);
+
             AddEvent(new BookReviewRemovedEvent(localReview, //#F
                 UpdateReviewCachedValues)); //#D
             AddEvent(new BookChangedEvent(BookChangeTypes.Updated), EventToSend.DuringSave);
@@ -291,34 +292,33 @@ namespace BookApp.Domain.Books
         #G This private method can be used by the event handlers to update the cached values
          ********************************************************************/
 
-        public IStatusGeneric AddPromotion(               
-            decimal actualPrice, string promotionalText)                 
+        public IStatusGeneric AddPromotion(
+            decimal actualPrice, string promotionalText)
         {
-            var status = new StatusGenericHandler();      
-            if (string.IsNullOrWhiteSpace(promotionalText)) 
+            var status = new StatusGenericHandler();
+            if (string.IsNullOrWhiteSpace(promotionalText))
             {
-                return status.AddError(                        
-                    "You must provide text to go with the promotion.", 
-                    nameof(PromotionalText));     
+                return status.AddError(
+                    "You must provide text to go with the promotion.",
+                    nameof(PromotionalText));
             }
 
-            ActualPrice = actualPrice;         
-            PromotionalText = promotionalText; 
+            ActualPrice = actualPrice;
+            PromotionalText = promotionalText;
 
             if (status.IsValid)
                 AddEvent(
-                    new BookChangedEvent(BookChangeTypes.Updated), 
+                    new BookChangedEvent(BookChangeTypes.Updated),
                     EventToSend.DuringSave);
 
-            return status; 
+            return status;
         }
 
-        public void RemovePromotion() 
+        public void RemovePromotion()
         {
-            ActualPrice = OrgPrice; 
+            ActualPrice = OrgPrice;
             PromotionalText = null;
             AddEvent(new BookChangedEvent(BookChangeTypes.Updated), EventToSend.DuringSave);
         }
     }
-
 }

@@ -14,7 +14,7 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         public int PageNum { get; }
 
         public int PageSize { get; }
-        
+
         public bool NoCount { get; }
     }
 }

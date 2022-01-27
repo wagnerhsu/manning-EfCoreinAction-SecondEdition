@@ -5,7 +5,9 @@ using System;
 
 namespace BookApp.Infrastructure.AppParts
 {
-    public enum BookAppMenuSettings { Basic, SqlOnly, SqlAndCosmos, CosmosOnly, All}
+    public enum BookAppMenuSettings
+    { Basic, SqlOnly, SqlAndCosmos, CosmosOnly, All }
+
     public class BookAppSettings
     {
         public string Title { get; set; }
@@ -23,10 +25,12 @@ namespace BookApp.Infrastructure.AppParts
                 case BookAppMenuSettings.Basic:
                 case BookAppMenuSettings.SqlOnly:
                     return "DefaultSql";
+
                 case BookAppMenuSettings.SqlAndCosmos:
                 case BookAppMenuSettings.CosmosOnly:
                 case BookAppMenuSettings.All:
                     return "CosmosEf";
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -35,7 +35,7 @@ namespace BookApp.Infrastructure.Books.Seeding
         private int NumBooksInSet => _loadedBooks.Count;
         private bool IncludeCosmosDb => _cosmosOptions != null;
 
-        public async Task<TimeSpan> WriteBooksAsync(string wwwRootDir, bool wipeDatabase, int totalBooksNeeded, 
+        public async Task<TimeSpan> WriteBooksAsync(string wwwRootDir, bool wipeDatabase, int totalBooksNeeded,
             bool makeBookTitlesDistinct, CancellationToken cancellationToken)
         {
             var stopWatch = new Stopwatch();
@@ -138,7 +138,7 @@ namespace BookApp.Infrastructure.Books.Seeding
             return batch.Count;
         }
 
-        private IEnumerable<Book> GenerateBooks(int batchToAdd, int numBooksInDb, bool makeBookTitlesDistinct, 
+        private IEnumerable<Book> GenerateBooks(int batchToAdd, int numBooksInDb, bool makeBookTitlesDistinct,
             Dictionary<string, Author> authorDict, Dictionary<string, Tag> tagsDict)
         {
             for (int i = numBooksInDb; i < numBooksInDb + batchToAdd; i++)
@@ -158,7 +158,7 @@ namespace BookApp.Infrastructure.Books.Seeding
                     reviewNumStars.Add((byte)_random.Next(0, 6));
                 }
 
-                var book = new Book(makeBookTitlesDistinct ?  $"{jsonBook.Title} (copy {sectionNum})" : jsonBook.Title,
+                var book = new Book(makeBookTitlesDistinct ? $"{jsonBook.Title} (copy {sectionNum})" : jsonBook.Title,
                     jsonBook.PublishedOn.AddDays(sectionNum),
                     jsonBook.EstimatedDate,
                     ManningBookLoad.PublisherString,

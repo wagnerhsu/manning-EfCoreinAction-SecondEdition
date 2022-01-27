@@ -9,14 +9,14 @@ using GenericServices.Configuration;
 
 namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
 {
-    class DeleteBookDtoConfig : PerDtoConfig<DeleteBookDto, Book>
+    internal class DeleteBookDtoConfig : PerDtoConfig<DeleteBookDto, Book>
     {
         public override Action<IMappingExpression<Book, DeleteBookDto>> AlterReadMapping
         {
             get
             {
                 return cfg => cfg
-                    .ForMember(x => x.AuthorsOrdered, y => 
+                    .ForMember(x => x.AuthorsOrdered, y =>
                         y.MapFrom(p => string.Join(", ",
                         p.AuthorsLink.OrderBy(q => q.Order).Select(q => q.Author.Name).ToList())));
             }

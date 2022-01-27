@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookApp.Persistence.Common.QueryObjects;
 using BookApp.Persistence.EfCoreSql.Books;
-using BookApp.ServiceLayer.DefaultSql.Books.Dtos;
 using BookApp.ServiceLayer.DefaultSql.Books.QueryObjects;
 using BookApp.ServiceLayer.DisplayCommon.Books;
 using BookApp.ServiceLayer.DisplayCommon.Books.Dtos;
@@ -25,19 +24,17 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Services
         public async Task<IQueryable<BookListDto>> SortFilterPageAsync
             (SortFilterPageOptions options)
         {
-            var booksQuery = _context.Books 
-                .AsNoTracking() 
-                .MapBookToDto() 
-                .OrderBooksBy(options.OrderByOptions) 
-                .FilterBooksBy(options.FilterBy, 
-                    options.FilterValue); 
+            var booksQuery = _context.Books
+                .AsNoTracking()
+                .MapBookToDto()
+                .OrderBooksBy(options.OrderByOptions)
+                .FilterBooksBy(options.FilterBy,
+                    options.FilterValue);
 
-            await options.SetupRestOfDtoAsync(booksQuery); 
+            await options.SetupRestOfDtoAsync(booksQuery);
 
-            return booksQuery.Page(options.PageNum - 1, 
-                options.PageSize); 
+            return booksQuery.Page(options.PageNum - 1,
+                options.PageSize);
         }
     }
-
-
 }

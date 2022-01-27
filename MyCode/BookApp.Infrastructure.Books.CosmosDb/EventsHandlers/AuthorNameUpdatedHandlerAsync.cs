@@ -1,16 +1,16 @@
 ﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
 // Licensed under MIT license. See License.txt in the project root for license information.
 
-using GenericEventRunner.ForHandlers;
-using StatusGeneric;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BookApp.Domain.Books;
 using BookApp.Domain.Books.DomainEvents;
 using BookApp.Persistence.EfCoreSql.Books;
+using GenericEventRunner.ForHandlers;
 using Microsoft.EntityFrameworkCore;
 using NetCore.AutoRegisterDi;
+using StatusGeneric;
 
 namespace BookApp.Infrastructure.Books.CosmosDb.EventsHandlers
 {
@@ -28,9 +28,8 @@ namespace BookApp.Infrastructure.Books.CosmosDb.EventsHandlers
 
         public async Task<IStatusGeneric> HandleAsync(object callingEntity, AuthorNameUpdatedEvent domainEvent, Guid uniqueKey)
         {
-
             var bookIds = await _sqlContext.Authors
-                .Where(x => x.AuthorId == ((Author) callingEntity).AuthorId)
+                .Where(x => x.AuthorId == ((Author)callingEntity).AuthorId)
                 .SelectMany(x => x.BooksLink.Select(y => y.BookId)).ToListAsync();
 
             await _service.UpdateManyCosmosBookAsync(bookIds);

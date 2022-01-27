@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using BookApp.Domain.Orders;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +23,17 @@ namespace BookApp.Persistence.EfCoreSql.Orders.DbAccess.Orders
         /// </summary>
         /// <param name="bookIds"></param>
         /// <returns>A dictionary with the BookId as the key, and the Book as the value</returns>
-        public async Task<IDictionary<int, BookView>> FindBooksByIdsAsync(IEnumerable<int> bookIds)               
+        public async Task<IDictionary<int, BookView>> FindBooksByIdsAsync(IEnumerable<int> bookIds)
         {
-            return await _context.BookViews                       
-                .Where(x => bookIds.Contains(x.BookId)) 
-                .ToDictionaryAsync(key => key.BookId);       
+            return await _context.BookViews
+                .Where(x => bookIds.Contains(x.BookId))
+                .ToDictionaryAsync(key => key.BookId);
         }
 
-        public Task AddAndSave(Order newOrder)                 
-        {                                               
+        public Task AddAndSave(Order newOrder)
+        {
             _context.Orders.Add(newOrder);
             return _context.SaveChangesAsync();
-        } 
+        }
     }
-
 }

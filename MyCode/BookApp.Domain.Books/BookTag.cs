@@ -7,7 +7,8 @@ namespace BookApp.Domain.Books
 {
     public class BookTag
     {
-        private BookTag(){} //For EF Core
+        private BookTag()
+        { } //For EF Core
 
         public BookTag(Book book, Tag tag)
         {

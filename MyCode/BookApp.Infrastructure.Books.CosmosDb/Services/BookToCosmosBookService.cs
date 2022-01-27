@@ -54,22 +54,22 @@ namespace BookApp.Infrastructure.Books.CosmosDb.Services
             _myLogger = _cosmosContext?.GetService<ILoggerFactory>().CreateLogger(nameof(BookToCosmosBookService));
         }
 
-        public async Task AddCosmosBookAsync(int bookId) 
+        public async Task AddCosmosBookAsync(int bookId)
         {
-            if (CosmosNotConfigured)  
-                return;               
+            if (CosmosNotConfigured)
+                return;
 
-            var cosmosBook = await MapBookToCosmosBookAsync(bookId); 
+            var cosmosBook = await MapBookToCosmosBookAsync(bookId);
 
-            if (cosmosBook != null)           
+            if (cosmosBook != null)
             {
-                _cosmosContext.Add(cosmosBook);        
-                await CosmosSaveChangesWithChecksAsync 
-                    (WhatDoing.Adding, bookId);        
+                _cosmosContext.Add(cosmosBook);
+                await CosmosSaveChangesWithChecksAsync
+                    (WhatDoing.Adding, bookId);
             }
             else
             {
-                await DeleteCosmosBookAsync(bookId);  
+                await DeleteCosmosBookAsync(bookId);
             }
         }
 
@@ -91,9 +91,10 @@ namespace BookApp.Infrastructure.Books.CosmosDb.Services
                 await DeleteCosmosBookAsync(bookId);  //#F
             }
         }
+
         /***************************************************************
         #A This method is called by the BookUpdated event handler, with the BookId of the SQL book
-        #B The Book App can be run without access to Cosmos DB, in which case it exits immediately 
+        #B The Book App can be run without access to Cosmos DB, in which case it exits immediately
         #C This method uses a Select method similar to the one used in chapter 2, to a CosmosBook entity class
         #D If the CosmosBook is successfully filled, then it executes the Cosmos update code
         #E This updates the CosmosBook to the cosmosContext and then calls a method to save it to the database
@@ -105,7 +106,7 @@ namespace BookApp.Infrastructure.Books.CosmosDb.Services
             if (CosmosNotConfigured)
                 return;
 
-            var cosmosBook = new CosmosBook {BookId = (int)bookId};
+            var cosmosBook = new CosmosBook { BookId = (int)bookId };
             _cosmosContext.Remove(cosmosBook);
             await CosmosSaveChangesWithChecksAsync(WhatDoing.Deleting, bookId);
         }
@@ -120,7 +121,8 @@ namespace BookApp.Infrastructure.Books.CosmosDb.Services
             await _cosmosContext.SaveChangesAsync();
         }
 
-        private enum WhatDoing {Adding, Updating, Deleting}
+        private enum WhatDoing
+        { Adding, Updating, Deleting }
 
         private async Task CosmosSaveChangesWithChecksAsync //#A
             (WhatDoing whatDoing, int bookId)  //#B
@@ -183,6 +185,7 @@ namespace BookApp.Infrastructure.Books.CosmosDb.Services
                     $"Cosmos SaveChangesAsync for {whatDoing}. Execute time = {stopwatch.ElapsedMilliseconds} ms.\n");
             }
         }
+
         /**************************************************************
         #A This calls SaveChanges and handles certain states
         #B To do this it needs to know what you are trying to do: Add, Update or Delete
@@ -213,7 +216,5 @@ namespace BookApp.Infrastructure.Books.CosmosDb.Services
                 .MapBookToCosmosBook()
                 .ToListAsync();
         }
-
-
     }
 }

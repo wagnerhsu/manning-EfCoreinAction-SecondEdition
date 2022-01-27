@@ -16,12 +16,12 @@ namespace BookApp.Domain.Books
         private HashSet<BookAuthor> _booksLink;
 
         public Author(string name, string email)
-        {                                       
-            _name = name;                       
-            Email = email;                      
-        }                                       
+        {
+            _name = name;
+            Email = email;
+        }
 
-        public int AuthorId { get;  private set; }
+        public int AuthorId { get; private set; }
 
         [Required(AllowEmptyStrings = false)]
         [MaxLength(100)]
@@ -50,11 +50,11 @@ namespace BookApp.Domain.Books
 
         public ICollection<BookAuthor> BooksLink => _booksLink?.ToList();
     }
+
     /*******************************************************
     #A Adding the EntityEventsBase will provide the methods to send an event
     #B This is the backing field for the Name property. EF Core will read/write this
     #C You make the setting public and  override the setter to add the event test/send
     #D If the Name has changes and it's not a new Author then it sends a domain event
      *******************************************************/
-
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
 {
     [IncludeThen(nameof(Book.Reviews))]
-    public class RemoveReviewDto: ILinkToEntity<Book>
+    public class RemoveReviewDto : ILinkToEntity<Book>
     {
         [HiddenInput]
         public int BookId { get; set; }

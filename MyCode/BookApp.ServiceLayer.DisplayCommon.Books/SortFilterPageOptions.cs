@@ -18,7 +18,7 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         /// <summary>
         ///     This holds the possible page sizes
         /// </summary>
-        public int[] PageSizes = new[] {5, 10, 20, 50, 100, 500, 1000};
+        public int[] PageSizes = new[] { 5, 10, 20, 50, 100, 500, 1000 };
 
         public OrderByOptions OrderByOptions { get; set; }
 
@@ -32,7 +32,6 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
 
         public bool NoCount { get; } = false;
 
-
         /// <summary>
         ///     This is set to the number of pages available based on the number of entries in the query
         /// </summary>
@@ -42,7 +41,6 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         ///     This holds the state of the key parts of the SortFilterPage parts
         /// </summary>
         public string PrevCheckState { get; set; }
-
 
         public async Task SetupRestOfDtoAsync<T>(IQueryable<T> query)
         {
@@ -73,7 +71,7 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         /// <returns></returns>
         private string GenerateCheckState()
         {
-            return $"{(int) FilterBy},{FilterValue},{PageSize},{NumPages}";
+            return $"{(int)FilterBy},{FilterValue},{PageSize},{NumPages}";
         }
     }
 }

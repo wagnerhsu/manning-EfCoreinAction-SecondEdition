@@ -28,7 +28,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
             Book loadedBook = null;
             var fixedThem = fixBadCacheValues ? "and fixed it" : "(not fixed)";
 
-            if (dto.RecalcReviewsCount != dto.ReviewsCount || 
+            if (dto.RecalcReviewsCount != dto.ReviewsCount ||
                 Math.Abs((dto.RecalcReviewsAverageVotes ?? 0) - dto.ReviewsAverageVotes) > 0.0001)
             {
                 status.AddError($"SQL: Review cached values incorrect {fixedThem}. " +

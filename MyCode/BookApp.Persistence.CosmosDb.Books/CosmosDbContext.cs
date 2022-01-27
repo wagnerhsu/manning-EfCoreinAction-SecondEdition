@@ -1,5 +1,4 @@
-﻿using System;
-using BookApp.Domain.Books;
+﻿using BookApp.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.Persistence.CosmosDb.Books
@@ -7,8 +6,8 @@ namespace BookApp.Persistence.CosmosDb.Books
     public class CosmosDbContext : DbContext //#A
     {
         public CosmosDbContext(
-            DbContextOptions<CosmosDbContext> options) 
-            : base(options)  
+            DbContextOptions<CosmosDbContext> options)
+            : base(options)
         { }
 
         public DbSet<CosmosBook> Books { get; set; } //#B
@@ -23,6 +22,7 @@ namespace BookApp.Persistence.CosmosDb.Books
                 .OwnsMany(p => p.Tags);       //#D
         }
     }
+
     /*****************************************************************
     #A The Cosmos DB DbContext has the same structure as any other DbContext
     #B For this usage you only need read/write the CosmosBooks

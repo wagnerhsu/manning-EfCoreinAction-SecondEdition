@@ -2,12 +2,9 @@
 // Licensed under MIT license. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using BookApp.Domain.Books.SupportTypes;
 using BookApp.Domain.Orders.SupportTypes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookApp.Persistence.Common
@@ -20,7 +17,6 @@ namespace BookApp.Persistence.Common
                 toDb => toDb,
                 fromDb =>
                     DateTime.SpecifyKind(fromDb, DateTimeKind.Utc));
-
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
@@ -65,7 +61,7 @@ namespace BookApp.Persistence.Common
                 }
 
                 if (typeof(IUserId).IsAssignableFrom(entityType.ClrType)
-                    && currentContext is IUserId userId )
+                    && currentContext is IUserId userId)
                 {
                     entityType.AddSoftDeleteQueryFilter(
                         MyQueryFilterTypes.UserId, userId);

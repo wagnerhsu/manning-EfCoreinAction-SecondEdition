@@ -13,7 +13,8 @@ namespace BookApp.Domain.Orders
     {
         private HashSet<LineItem> _lineItems;
 
-        private Order() { }
+        private Order()
+        { }
 
         public int OrderId { get; private set; }
 
@@ -38,13 +39,14 @@ namespace BookApp.Domain.Orders
             byte lineNum = 1;
             order._lineItems = new HashSet<LineItem>(        //#F
                 bookOrders                                   //#F
-                .Select(x => new LineItem( x, lineNum++)));  //#F
+                .Select(x => new LineItem(x, lineNum++)));  //#F
 
             if (!order._lineItems.Any())                     //#G
                 status.AddError("No items in your basket."); //#G
 
             return status.SetResult(order); //#H
         }
+
         /***************************************************************
         #A This static factory will create the Order with lineItems
         #B The Order uses the UserId to only show orders to the person who created it
@@ -55,6 +57,5 @@ namespace BookApp.Domain.Orders
         #G This is a double-check that the Order is valid.
         #H This returns the status with the Order. If there are errors the status sets the result to null
          ***************************************************************/
-
     }
 }

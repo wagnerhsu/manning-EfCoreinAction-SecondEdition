@@ -3,17 +3,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BookApp.Domain.Books
 {
-    public class CosmosBook 
+    public class CosmosBook
     {
         public int BookId { get; set; }  //#A
 
         public string Title { get; set; }           //#B
         public DateTime PublishedOn { get; set; }   //#B
-        public bool EstimatedDate { get;  set; }    //#B
+        public bool EstimatedDate { get; set; }    //#B
         public int YearPublished { get; set; }      //#B
         public decimal OrgPrice { get; set; }       //#B
         public decimal ActualPrice { get; set; }    //#B
@@ -33,6 +32,7 @@ namespace BookApp.Domain.Books
             return $"{Title}: by {AuthorsOrdered}. Price {ActualPrice}, {ReviewsCount} reviews. Published {PublishedOn:d}, Tags: {TagsString}";
         }
     }
+
     /*********************************************************
     #A We use the BookId used in the SQL database to link this entity to the SQL entity
     #B These are normal properties that are needed to display the book
@@ -40,5 +40,4 @@ namespace BookApp.Domain.Books
     #D To allow filtering on Tags we provide a list of CosmosTags, which are configured as Owned Types
     #E EF Core 5 doesn't support IN for Cosmos DB, but it does support string contains
      ************************************************************/
-
 }

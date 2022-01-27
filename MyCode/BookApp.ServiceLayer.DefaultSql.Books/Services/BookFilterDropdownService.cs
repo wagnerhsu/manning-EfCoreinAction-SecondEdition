@@ -32,8 +32,10 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Services
                 case BooksFilterBy.NoFilter:
                     //return an empty list
                     return new List<DropdownTuple>();
+
                 case BooksFilterBy.ByVotes:
                     return FormVotesDropDown();
+
                 case BooksFilterBy.ByTags:
                     return _db.Tags
                         .Select(x => new DropdownTuple
@@ -41,19 +43,20 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Services
                             Value = x.TagId,
                             Text = x.TagId
                         }).ToList();
+
                 case BooksFilterBy.ByPublicationYear:
-                    var comingSoon = _db.Books.                      
+                    var comingSoon = _db.Books.
                         Any(x => x.PublishedOn > DateTime.Today);
-                    var result = _db.Books 
-                        .Where(x => x.PublishedOn <= DateTime.Today) 
-                        .Select(x => x.PublishedOn.Year)             
-                        .Distinct()                                  
+                    var result = _db.Books
+                        .Where(x => x.PublishedOn <= DateTime.Today)
+                        .Select(x => x.PublishedOn.Year)
+                        .Distinct()
                         .OrderByDescending(x => x)
-                        .Select(x => new DropdownTuple               
-                        {                                            
-                            Value = x.ToString(),                    
-                            Text = x.ToString()                      
-                        }).ToList();                                 
+                        .Select(x => new DropdownTuple
+                        {
+                            Value = x.ToString(),
+                            Text = x.ToString()
+                        }).ToList();
                     if (comingSoon)
                         result.Insert(0, new DropdownTuple
                         {
@@ -62,6 +65,7 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Services
                         });
 
                     return result;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(filterBy), filterBy, null);
             }

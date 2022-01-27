@@ -1,10 +1,8 @@
-// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
+﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
 // Licensed under MIT license. See License.txt in the project root for license information.
 
-using System;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using AutoMapper.Configuration.Annotations;
 using BookApp.BackgroundTasks;
 using BookApp.BizLogic.Orders.Orders;
 using BookApp.Infrastructure.AppParts;
@@ -27,7 +25,6 @@ using BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices;
 using BookApp.ServiceLayer.UdfsSql.Books;
 using BookApp.UI.HelperExtensions;
 using BookApp.UI.Logger;
-using BookApp.UI.Models;
 using BookApp.UI.Services;
 using GenericEventRunner.ForSetup;
 using GenericServices.Setup;
@@ -39,7 +36,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NetCore.AutoRegisterDi;
 using SoftDeleteServices.Configuration;
 
@@ -59,7 +55,7 @@ namespace BookApp.UI
         {
             services.AddControllersWithViews() //#B
                 .AddRazorRuntimeCompilation() //This recompile a razor page if you edit it while the app is running
-                //Added this because my logs display needs the enum as a string
+                                              //Added this because my logs display needs the enum as a string
                 .AddJsonOptions(opts =>
                 {
                     opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -72,7 +68,7 @@ namespace BookApp.UI
             var sqlConnection = Configuration.GetCorrectSqlConnection(bookAppSettings);
 
             //This registers both DbContext. Each MUST have a unique MigrationsHistoryTable for Migrations to work
-            services.AddDbContext<BookDbContext>( 
+            services.AddDbContext<BookDbContext>(
                 options => options.UseSqlServer(sqlConnection, dbOptions =>
                 dbOptions.MigrationsHistoryTable("BookMigrationHistoryName")));
             services.AddDbContext<OrderDbContext>(
@@ -91,7 +87,7 @@ namespace BookApp.UI
 
             services.AddHttpContextAccessor();
 
-            services.Configure<BookAppSettings>(options => 
+            services.Configure<BookAppSettings>(options =>
                 Configuration.GetSection(nameof(BookAppSettings)).Bind(options));
             services.AddSingleton<IMenuBuilder, MenuBuilder>();
 

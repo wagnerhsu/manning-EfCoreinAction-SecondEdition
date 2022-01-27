@@ -25,11 +25,9 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices.Concrete
         /// <returns></returns>
         public List<OrderListDto> GetUsersOrders()
         {
-
             return SelectQuery(_context.Orders.OrderByDescending(x => x.DateOrderedUtc))
                 .ToList();
         }
-
 
         public OrderListDto GetOrderDetail(int orderId)
         {
@@ -47,19 +45,19 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices.Concrete
         private IQueryable<OrderListDto> SelectQuery(IQueryable<Order> orders)
         {
             return orders.Select(x => new OrderListDto
-                               {
-                                   OrderId = x.OrderId,
-                                   DateOrderedUtc = x.DateOrderedUtc,
-                                   LineItems = x.LineItems.Select(lineItem => new CheckoutItemDto
-                                   {
-                                       BookId = lineItem.BookId,
-                                       Title = lineItem.BookView.Title,
-                                       ImageUrl = lineItem.BookView.ImageUrl,
-                                       AuthorsName = lineItem.BookView.AuthorsOrdered,
-                                       BookPrice = lineItem.BookPrice,
-                                       NumBooks = lineItem.NumBooks,
-                                   })
-                               });
+            {
+                OrderId = x.OrderId,
+                DateOrderedUtc = x.DateOrderedUtc,
+                LineItems = x.LineItems.Select(lineItem => new CheckoutItemDto
+                {
+                    BookId = lineItem.BookId,
+                    Title = lineItem.BookView.Title,
+                    ImageUrl = lineItem.BookView.ImageUrl,
+                    AuthorsName = lineItem.BookView.AuthorsOrdered,
+                    BookPrice = lineItem.BookPrice,
+                    NumBooks = lineItem.NumBooks,
+                })
+            });
         }
     }
 }

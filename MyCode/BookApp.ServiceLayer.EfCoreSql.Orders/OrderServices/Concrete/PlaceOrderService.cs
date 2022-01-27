@@ -16,10 +16,10 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices.Concrete
         private readonly BasketCookie _basketCookie;
         private readonly IPlaceOrderBizLogic _placeOrder;
 
-        public PlaceOrderService(                           
-            IRequestCookieCollection cookiesIn,              
-            IResponseCookies cookiesOut,                    
-            IPlaceOrderBizLogic placeOrder)                          
+        public PlaceOrderService(
+            IRequestCookieCollection cookiesIn,
+            IResponseCookies cookiesOut,
+            IPlaceOrderBizLogic placeOrder)
         {
             _basketCookie = new BasketCookie(cookiesIn, cookiesOut);
             _placeOrder = placeOrder;
@@ -29,28 +29,28 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices.Concrete
         /// This creates the order and, if successful clears the cookie
         /// </summary>
         /// <returns>Returns the OrderId, or zero if errors</returns>
-        public async Task<IStatusGeneric<int>> PlaceOrderAndClearBasketAsync(bool acceptTAndCs)            
+        public async Task<IStatusGeneric<int>> PlaceOrderAndClearBasketAsync(bool acceptTAndCs)
         {
             var status = new StatusGenericHandler<int>();
 
             var checkoutService = new CheckoutCookieService(
-                _basketCookie.GetValue());                  
+                _basketCookie.GetValue());
 
-            var bizStatus = await _placeOrder.CreateOrderAndSaveAsync(                  
+            var bizStatus = await _placeOrder.CreateOrderAndSaveAsync(
                 new PlaceOrderInDto(acceptTAndCs, checkoutService.UserId, checkoutService.LineItems));
-
 
             if (status.CombineStatuses(bizStatus).HasErrors)
                 return status;
 
             //successful so clear the cookie line items
-            checkoutService.ClearAllLineItems();            
-            _basketCookie.AddOrUpdateCookie(                
-                checkoutService.EncodeForCookie());         
+            checkoutService.ClearAllLineItems();
+            _basketCookie.AddOrUpdateCookie(
+                checkoutService.EncodeForCookie());
 
-            return status.SetResult( bizStatus.Result.OrderId);                           
+            return status.SetResult(bizStatus.Result.OrderId);
         }
     }
+
     //0123456789|123456789|123456789|123456789|123456789|123456789|123456789|xxxxx!
     /***********************************************************
     #A This class handles the basket cookie which contains the user selected books
@@ -60,7 +60,7 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices.Concrete
     #E This creates a BasketCookie using the cookie in/out data from ASP.NET Core
     #F This creates the BizRunner, with the business logic, that is to be run
     #G This is the method to call when the user presses the Purchase button
-    #H The CheckoutCookieService is a class that encodes/decodes the basket data 
+    #H The CheckoutCookieService is a class that encodes/decodes the basket data
     #I This runs the business logic with the data it needs from the basket cookie
     #J If the business logic has errors  it returns immediately. The basket cookie is not cleared
     #K The order was placed successfully so it clears the basket cookie

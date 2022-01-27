@@ -11,13 +11,15 @@ namespace BookApp.Infrastructure.Books.CachedValues.CheckFixCode
 
         //Cached values
         public string AuthorsOrdered { get; set; }
-        public int ReviewsCount { get;  set; }
-        public double ReviewsAverageVotes { get;  set; }
+
+        public int ReviewsCount { get; set; }
+        public double ReviewsAverageVotes { get; set; }
 
         //Recalculated values
         public string RecalcAuthorsOrdered { get; set; }
-        public int RecalcReviewsCount { get;  set; }
-        public double? RecalcReviewsAverageVotes { get;  set; }
+
+        public int RecalcReviewsCount { get; set; }
+        public double? RecalcReviewsAverageVotes { get; set; }
 
         public DateTime LastUpdatedUtc { get; set; }
     }

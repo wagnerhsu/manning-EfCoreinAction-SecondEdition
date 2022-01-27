@@ -5,7 +5,8 @@ using GenericEventRunner.DomainParts;
 
 namespace BookApp.Domain.Books.DomainEvents
 {
-    public enum BookChangeTypes { Added, Updated, Deleted } //#A
+    public enum BookChangeTypes
+    { Added, Updated, Deleted } //#A
 
     [RemoveDuplicateEvents] //#B
     public class BookChangedEvent : IEntityEvent //#C
@@ -17,6 +18,7 @@ namespace BookApp.Domain.Books.DomainEvents
 
         public BookChangeTypes BookChangeType { get; }  //#E
     }
+
     /*****************************************************************
     #A these are the three types of changes that need mapping to the Cosmos DB database
     #B This attribute causes the GenericEventRunner to remove other events that are for the same Book instance

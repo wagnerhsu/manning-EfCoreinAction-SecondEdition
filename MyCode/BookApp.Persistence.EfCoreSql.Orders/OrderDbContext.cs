@@ -10,31 +10,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.Persistence.EfCoreSql.Orders
 {
-    public class OrderDbContext : DbContext, IUserId                   
+    public class OrderDbContext : DbContext, IUserId
     {
-        public Guid UserId { get; private set; }                      
+        public Guid UserId { get; private set; }
 
-        public OrderDbContext(DbContextOptions<OrderDbContext> options,   
-            IUserIdService userIdService = null)                        
-            : base(options)                                           
-        {                                                             
-            UserId = userIdService?.GetUserId()                         
-                     ?? new ReplacementUserIdService().GetUserId();     
+        public OrderDbContext(DbContextOptions<OrderDbContext> options,
+            IUserIdService userIdService = null)
+            : base(options)
+        {
+            UserId = userIdService?.GetUserId()
+                     ?? new ReplacementUserIdService().GetUserId();
         }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<BookView> BookViews { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)                 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.AutoConfigureTypes();
             modelBuilder.AutoConfigureQueryFilters<OrderDbContext>(this);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
     }
 }
+
 /******************************************************************************
 * NOTES ON MIGRATION:
 *
@@ -43,13 +43,13 @@ namespace BookApp.Persistence.EfCoreSql.Orders
 * You need to build a migration from the DbContext's project (see below)
 *
 * NOTE: The EF Core commands give a error, but it does create the migration
-* 
+*
 * see https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/migrations?tabs=visual-studio
-* 
+*
 * The following NuGet libraries must be loaded
 * 1. Add to BookApp: "Microsoft.EntityFrameworkCore.Tools"
 * 2. Add to DataLayer: "Microsoft.EntityFrameworkCore.SqlServer" (or another database provider)
-* 
+*
 * 2. Using Package Manager Console commands
 * The steps are:
 * a) Make sure the default project is BookApp.Persistence.EfCoreSql.Orders
@@ -57,7 +57,7 @@ namespace BookApp.Persistence.EfCoreSql.Orders
 *    Add-Migration NameForMigration -Context OrderDbContext
 * c) Use PMC command
 *    Update-database (or migrate on startup)
-*    
+*
 * If you want to start afresh then:
 * a) Delete the current database
 * b) Delete all the class in the Migration directory

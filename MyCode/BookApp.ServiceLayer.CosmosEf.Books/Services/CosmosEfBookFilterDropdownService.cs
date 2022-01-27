@@ -40,8 +40,10 @@ namespace BookApp.ServiceLayer.CosmosEf.Books.Services
                 case BooksFilterBy.NoFilter:
                     //return an empty list
                     return new List<DropdownTuple>();
+
                 case BooksFilterBy.ByVotes:
                     return FormVotesDropDown();
+
                 case BooksFilterBy.ByTags:
                     if (_sqlContext == null)
                         throw new NotImplementedException();
@@ -51,11 +53,12 @@ namespace BookApp.ServiceLayer.CosmosEf.Books.Services
                             Value = x.TagId,
                             Text = x.TagId
                         }).ToList();
+
                 case BooksFilterBy.ByPublicationYear:
                     var container = _db.GetCosmosContainerFromDbContext(
                         _settings.CosmosDatabaseName);
 
-                    var comingSoonResultSet = 
+                    var comingSoonResultSet =
                         container.GetItemQueryIterator<int>(
                         new QueryDefinition("SELECT value Count(c) FROM c WHERE" +
                             $" c.YearPublished > {DateTime.Today:yyyy-MM-dd} " +
@@ -66,7 +69,7 @@ namespace BookApp.ServiceLayer.CosmosEf.Books.Services
 
                     var now = DateTime.UtcNow;
                     var resultSet = container.GetItemQueryIterator<int>(
-                        new QueryDefinition("SELECT DISTINCT VALUE c.YearPublished " + 
+                        new QueryDefinition("SELECT DISTINCT VALUE c.YearPublished " +
                             $"FROM c WHERE c.YearPublished > {now:yyyy-mm-dd}"));
 
                     var years = (await resultSet.ReadNextAsync()).ToList();
@@ -97,21 +100,22 @@ namespace BookApp.ServiceLayer.CosmosEf.Books.Services
                     //    .Distinct().ToListAsync();
                     ////see this issue in EF Core about why I had to split the query - https://github.com/aspnet/EntityFrameworkCore/issues/16156
                     //var result = allYears
-                    //    .Where(x => x < nextYear)                   
-                    //    .OrderByDescending(x => x)                  
-                    //    .Select(x => new DropdownTuple              
-                    //    {                                           
-                    //        Value = x.ToString(),                   
-                    //        Text = x.ToString()                     
-                    //    }).ToList();                                
-                    //if (comingSoon)                                 
-                    //    result.Insert(0, new DropdownTuple          
+                    //    .Where(x => x < nextYear)
+                    //    .OrderByDescending(x => x)
+                    //    .Select(x => new DropdownTuple
+                    //    {
+                    //        Value = x.ToString(),
+                    //        Text = x.ToString()
+                    //    }).ToList();
+                    //if (comingSoon)
+                    //    result.Insert(0, new DropdownTuple
                     //    {
                     //        Value = BookListDtoFilter.AllBooksNotPublishedString,
                     //        Text = BookListDtoFilter.AllBooksNotPublishedString
                     //    });
 
                     return result;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(filterBy), filterBy, null);
             }

@@ -24,8 +24,10 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
                 case BooksFilterBy.NoFilter:
                     //return an empty list
                     return new List<DropdownTuple>();
+
                 case BooksFilterBy.ByVotes:
                     return FormVotesDropDown();
+
                 case BooksFilterBy.ByTags:
                     var tagResults = container.GetItemQueryIterator<string>(
                         new QueryDefinition("SELECT DISTINCT value f.TagId FROM c JOIN f in c.Tags"));
@@ -36,6 +38,7 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
                             Value = x,
                             Text = x
                         }).ToList();
+
                 case BooksFilterBy.ByPublicationYear:
                     var comingSoonResultSet = container.GetItemQueryIterator<int>(
                         new QueryDefinition($"SELECT value Count(c) FROM c WHERE c.YearPublished > {DateTime.Today:yyyy-MM-dd} OFFSET 0 LIMIT 1"));
@@ -49,11 +52,11 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
                     var result = years
                         .Where(x => x < nextYear)
                         .OrderByDescending(x => x)
-                        .Select(x => new DropdownTuple               
-                        {                                            
-                            Value = x.ToString(),                    
-                            Text = x.ToString()                      
-                        }).ToList();                                 
+                        .Select(x => new DropdownTuple
+                        {
+                            Value = x.ToString(),
+                            Text = x.ToString()
+                        }).ToList();
                     if (comingSoon)
                         result.Insert(0, new DropdownTuple
                         {
@@ -62,6 +65,7 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
                         });
 
                     return result;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(filterBy), filterBy, null);
             }

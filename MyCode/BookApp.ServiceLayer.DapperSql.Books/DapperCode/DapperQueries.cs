@@ -34,8 +34,8 @@ namespace BookApp.ServiceLayer.DapperSql.Books.DapperCode
             public void Dispose()
             {
                 stopwatch.Stop();
-                _myLogger.LogInformation(new EventId(1, LogParts.DapperEventName), 
-                    $"Dapper Query. Execute time = {stopwatch.ElapsedMilliseconds} ms.\n"+ _command);
+                _myLogger.LogInformation(new EventId(1, LogParts.DapperEventName),
+                    $"Dapper Query. Execute time = {stopwatch.ElapsedMilliseconds} ms.\n" + _command);
             }
         }
 
@@ -44,7 +44,7 @@ namespace BookApp.ServiceLayer.DapperSql.Books.DapperCode
                 ISortFilterPage options) //#C
         {
             var command = BuildQueryString(options, false); //#D
-            using(new LogDapperCommand(command, context)) //#E
+            using (new LogDapperCommand(command, context)) //#E
             {
                 return await context.Database.GetDbConnection() //#F
                     .QueryAsync<BookListDto>(command, new    //#G
@@ -70,8 +70,8 @@ namespace BookApp.ServiceLayer.DapperSql.Books.DapperCode
 
             return selectOptTop + filter   //#N
                 + sort + optOffset + "\n"; //#N
-
         }
+
         /*****************************************************************
         #A A Dapper query returns an IEnumerable<T> result. By default, it will have read all the rows in one go, but you can change Dapper's buffered options
         #B I pass in the application's DbContext, as I am assuming most of the database accesses will be done via EF Core
@@ -88,7 +88,6 @@ namespace BookApp.ServiceLayer.DapperSql.Books.DapperCode
         #M For paging I need to add a OFFSET value
         #N Finally I return the compelete SQL command
          * ***************************************************************/
-
 
         public static async Task<int> DapperBookListCountAsync(this BookDbContext context, SortFilterPageOptions options)
         {
@@ -110,19 +109,22 @@ namespace BookApp.ServiceLayer.DapperSql.Books.DapperCode
             {
                 case BooksFilterBy.NoFilter:
                     return start;
+
                 case BooksFilterBy.ByVotes:
                     return start + @"AND ((
     SELECT AVG(CAST([y0].[NumStars] AS float))
     FROM [Review] AS [y0]
     WHERE [b].[BookId] = [y0].[BookId]
 ) > @filterVal)";
+
                 case BooksFilterBy.ByTags:
-                    return start + @"AND 
-(@filterVal IN (SELECT [t].[TagId] FROM BookTag AS t 
+                    return start + @"AND
+(@filterVal IN (SELECT [t].[TagId] FROM BookTag AS t
 WHERE [t].[BookId] = [b].[BookId])) ";
+
                 case BooksFilterBy.ByPublicationYear:
                     return start +
-@"AND (DATEPART(year, [b].[PublishedOn]) = @filterVal) 
+@"AND (DATEPART(year, [b].[PublishedOn]) = @filterVal)
 AND ([b].[PublishedOn] <= GETUTCDATE()) ";
             }
             throw new NotImplementedException();
@@ -135,12 +137,16 @@ AND ([b].[PublishedOn] <= GETUTCDATE()) ";
             {
                 case OrderByOptions.SimpleOrder:
                     return start + "[b].[BookId] DESC ";
+
                 case OrderByOptions.ByVotes:
                     return start + "[ReviewsAverageVotes] DESC ";
+
                 case OrderByOptions.ByPublicationDate:
                     return start + "[b].[PublishedOn] DESC ";
+
                 case OrderByOptions.ByPriceLowestFirst:
                     return start + "[ActualPrice] ";
+
                 case OrderByOptions.ByPriceHighestFirst:
                     return start + "[ActualPrice] DESC ";
             }
@@ -159,18 +165,18 @@ AND ([b].[PublishedOn] <= GETUTCDATE()) ";
             if (justCount)
                 return "SELECT COUNT(*) FROM [Books] AS [b] ";
 
-            var selectOpt =  options.PageNum <= 1
+            var selectOpt = options.PageNum <= 1
                 ? "SELECT TOP(@pageSize) "
                 : "SELECT ";
 
             return selectOpt +
 @"[b].[BookId], [b].[Title], [b].[OrgPrice], [b].[ActualPrice],
 [b].[PublishedOn],
-[b].[PromotionalText] AS [PromotionPromotionalText], 
-[dbo].AuthorsStringUdf([b].[BookId]) AS [AuthorsOrdered], 
+[b].[PromotionalText] AS [PromotionPromotionalText],
+[dbo].AuthorsStringUdf([b].[BookId]) AS [AuthorsOrdered],
 [dbo].TagsStringUdf([b].[BookId]) AS [TagsString],
-( SELECT COUNT(*) FROM [Review] AS [r] WHERE [b].[BookId] = [r].[BookId] ) AS [ReviewsCount], 
-( SELECT AVG(CAST([y].[NumStars] AS float)) FROM [Review] AS [y] WHERE [b].[BookId] = [y].[BookId] ) AS [ReviewsAverageVotes] 
+( SELECT COUNT(*) FROM [Review] AS [r] WHERE [b].[BookId] = [r].[BookId] ) AS [ReviewsCount],
+( SELECT AVG(CAST([y].[NumStars] AS float)) FROM [Review] AS [y] WHERE [b].[BookId] = [y].[BookId] ) AS [ReviewsAverageVotes]
 FROM [Books] AS [b]
 ";
         }

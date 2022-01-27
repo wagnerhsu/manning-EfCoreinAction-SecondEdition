@@ -9,13 +9,11 @@ namespace BookApp.UI.SoftDeleteConfig
 {
     public class ConfigSoftDelete : SingleSoftDeleteConfiguration<ISoftDelete>
     {
-
         public ConfigSoftDelete(BookDbContext context)
             : base(context)
         {
             GetSoftDeleteValue = entity => entity.SoftDeleted;
             SetSoftDeleteValue = (entity, value) => entity.AlterSoftDelete(value);
-
         }
     }
 }

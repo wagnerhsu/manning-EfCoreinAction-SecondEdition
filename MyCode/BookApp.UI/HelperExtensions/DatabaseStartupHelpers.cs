@@ -12,16 +12,15 @@ using BookApp.Persistence.EfCoreSql.Orders;
 using BookApp.UI.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 
 namespace BookApp.UI.HelperExtensions
 {
     public static class DatabaseStartupHelpers
     {
-
         /// <summary>
         /// This makes sure the database is created/updated
         /// </summary>
@@ -78,7 +77,6 @@ namespace BookApp.UI.HelperExtensions
             return webHost;
         }
 
-
         public static string GetCorrectSqlConnection(this IConfiguration config, BookAppSettings settings)
         {
             var baseConnection = config.GetConnectionString(settings.SqlConnectionString, false);
@@ -91,7 +89,6 @@ namespace BookApp.UI.HelperExtensions
 
         public static CosmosDbSettings GetCosmosDbSettings(this IConfiguration config, BookAppSettings settings)
         {
-
             if (!settings.CosmosAvailable)
                 return null;
 

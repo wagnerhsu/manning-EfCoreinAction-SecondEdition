@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
 // Licensed under MIT license. See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using BookApp.Domain.Books.SupportTypes;
@@ -14,10 +13,11 @@ namespace BookApp.Domain.Books
     {
         public const int NameLength = 100;
 
-        private Review() { }
+        private Review()
+        { }
 
-        internal Review(int numStars, 
-            string comment, string voterName, 
+        internal Review(int numStars,
+            string comment, string voterName,
             int bookId = 0)
         {
             NumStars = numStars;
@@ -42,5 +42,4 @@ namespace BookApp.Domain.Books
 
         public int BookId { get; private set; }
     }
-
 }

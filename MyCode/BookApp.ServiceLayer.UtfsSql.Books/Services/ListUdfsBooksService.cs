@@ -45,6 +45,4 @@ namespace BookApp.ServiceLayer.UdfsSql.Books.Services
                 options.PageSize);
         }
     }
-
-
 }

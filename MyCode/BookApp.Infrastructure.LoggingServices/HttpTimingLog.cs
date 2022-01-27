@@ -38,7 +38,6 @@ namespace BookApp.Infrastructure.LoggingServices
         public DateTime LastAccessed { get; private set; }
         public List<double> Timings { get; }
 
-
         public static void AddLog(string url, string eventString)
         {
             if (UrlsToIgnore.Any(url.StartsWith))

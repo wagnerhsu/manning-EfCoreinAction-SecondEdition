@@ -24,19 +24,17 @@ namespace BookApp.ServiceLayer.CachedSql.Books.Services
         public async Task<IQueryable<BookListDto>> SortFilterPageAsync
             (SortFilterPageOptions options)
         {
-            var booksQuery = _context.Books 
-                .AsNoTracking() 
-                .MapBookCachedToDto() 
-                .OrderBooksBy(options.OrderByOptions) 
-                .FilterBooksBy(options.FilterBy, 
-                    options.FilterValue); 
+            var booksQuery = _context.Books
+                .AsNoTracking()
+                .MapBookCachedToDto()
+                .OrderBooksBy(options.OrderByOptions)
+                .FilterBooksBy(options.FilterBy,
+                    options.FilterValue);
 
-            await options.SetupRestOfDtoAsync(booksQuery); 
+            await options.SetupRestOfDtoAsync(booksQuery);
 
-            return booksQuery.Page(options.PageNum - 1, 
-                options.PageSize); 
+            return booksQuery.Page(options.PageNum - 1,
+                options.PageSize);
         }
     }
-
-
 }

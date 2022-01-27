@@ -9,6 +9,4 @@ namespace BookApp.BizLogic.Orders.Orders
 
         public short NumBooks { get; set; }
     }
-
-
 }

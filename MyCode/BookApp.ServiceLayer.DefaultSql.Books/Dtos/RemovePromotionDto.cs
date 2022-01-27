@@ -14,5 +14,4 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
 
         public string Title { get; set; }
     }
-
 }

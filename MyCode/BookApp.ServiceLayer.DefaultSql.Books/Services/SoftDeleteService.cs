@@ -13,7 +13,5 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Services
         {
             _context = context;
         }
-
-
     }
 }

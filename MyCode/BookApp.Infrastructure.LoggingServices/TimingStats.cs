@@ -34,6 +34,5 @@ namespace BookApp.Infrastructure.LoggingServices
         public double MaxMillisecond { get; }
         public double AverageMilliseconds { get; }
         public int NumPoints { get; }
-
     }
 }

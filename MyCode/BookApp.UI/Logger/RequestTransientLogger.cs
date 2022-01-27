@@ -41,7 +41,6 @@ namespace BookApp.UI.Logger
             public MyLogger(Func<IHttpContextAccessor> httpAccessor)
             {
                 _httpAccessor = httpAccessor;
-                
             }
 
             public bool IsEnabled(LogLevel logLevel)

@@ -8,9 +8,8 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.CheckoutServices.Concrete
 {
     public abstract class CookieTemplate
     {
-
         private readonly IRequestCookieCollection _cookiesIn;
-        private readonly IResponseCookies _cookiesOut;  
+        private readonly IResponseCookies _cookiesOut;
         private readonly string _cookieName;
 
         protected CookieTemplate(string cookieName, IRequestCookieCollection cookiesIn, IResponseCookies cookiesOut = null)
@@ -30,7 +29,8 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.CheckoutServices.Concrete
         /// Override to to set the expiration time of the cookie in days.
         /// If not overriden then returns 0 which means cookie Expiration is not set and it becomes a session cookie
         /// </summary>
-        protected virtual int ExpiresInThisManyDays { get { return 0; } }
+        protected virtual int ExpiresInThisManyDays
+        { get { return 0; } }
 
         //-----------------------------------------------------
         //Now the public interfaces
@@ -64,10 +64,8 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.CheckoutServices.Concrete
                 throw new NullReferenceException("You must supply a IResponseCookies value if you want to use this command.");
 
             if (!Exists()) return;
-            var options = new CookieOptions {Expires = DateTime.Now.AddYears(-1)};
+            var options = new CookieOptions { Expires = DateTime.Now.AddYears(-1) };
             _cookiesOut.Append(_cookieName, "", options);
         }
-
-
     }
 }

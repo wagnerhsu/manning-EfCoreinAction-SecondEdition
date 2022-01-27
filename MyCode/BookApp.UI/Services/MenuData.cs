@@ -13,6 +13,5 @@ namespace BookApp.UI.Services
 
         public string ControllerName { get; private set; }
         public string MenuString { get; private set; }
-
     }
 }

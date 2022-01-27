@@ -1,14 +1,12 @@
 ﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
 // Licensed under MIT license. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading.Tasks;
 using BookApp.BizLogic.Orders.BasketServices;
 using BookApp.BizLogic.Orders.Orders;
 using BookApp.Persistence.EfCoreSql.Orders;
 using BookApp.ServiceLayer.EfCoreSql.Orders.CheckoutServices.Concrete;
 using BookApp.ServiceLayer.EfCoreSql.Orders.OrderServices.Concrete;
-using BookApp.UI.Controllers;
 using GenericServices.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,17 +32,17 @@ namespace BookApp.UI.Controllers
             return View(result);
         }
 
-        public IActionResult Buy(OrderLineItem itemToBuy) 
+        public IActionResult Buy(OrderLineItem itemToBuy)
         {
-            var cookie = new BasketCookie(      
-                HttpContext.Request.Cookies,    
-                HttpContext.Response.Cookies);  
-            var service = new CheckoutCookieService(cookie.GetValue());                   
-            service.AddLineItem(itemToBuy); 
+            var cookie = new BasketCookie(
+                HttpContext.Request.Cookies,
+                HttpContext.Response.Cookies);
+            var service = new CheckoutCookieService(cookie.GetValue());
+            service.AddLineItem(itemToBuy);
             var cookieOutString = service.EncodeForCookie();
-            cookie.AddOrUpdateCookie(cookieOutString); 
+            cookie.AddOrUpdateCookie(cookieOutString);
             SetupTraceInfo(); //Remove this when shown in book listing
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
 
         public IActionResult DeleteLineItem(int lineNum)
@@ -63,7 +61,7 @@ namespace BookApp.UI.Controllers
             var bizStatus = await service.PlaceOrderAndClearBasketAsync(acceptTAndCs);
 
             if (bizStatus.IsValid)
-                return RedirectToAction("ConfirmOrder", "Orders", new {orderId = bizStatus.Result});
+                return RedirectToAction("ConfirmOrder", "Orders", new { orderId = bizStatus.Result });
 
             //Otherwise errors, so copy over and redisplay
             bizStatus.CopyErrorsToModelState(ModelState);

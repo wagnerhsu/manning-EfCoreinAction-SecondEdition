@@ -33,6 +33,4 @@ namespace BookApp.ServiceLayer.CachedSql.Books.Services
             return booksQuery;
         }
     }
-
-
 }

@@ -19,6 +19,7 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         [Display(Name = "All")] NoFilter = 0,
         [Display(Name = "By Votes...")] ByVotes,
         [Display(Name = "By Tags...")] ByTags,
+
         [Display(Name = "By Year published...")]
         ByPublicationYear
     }

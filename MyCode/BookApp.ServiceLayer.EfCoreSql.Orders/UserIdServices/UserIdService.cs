@@ -11,25 +11,25 @@ namespace BookApp.ServiceLayer.EfCoreSql.Orders.UserIdServices
 {
     public class UserIdService : IUserIdService
     {
-        private readonly IHttpContextAccessor _httpAccessor;            
+        private readonly IHttpContextAccessor _httpAccessor;
 
-        public UserIdService(IHttpContextAccessor httpAccessor)         
-        {                                                               
-            _httpAccessor = httpAccessor;                               
-        }                                                               
+        public UserIdService(IHttpContextAccessor httpAccessor)
+        {
+            _httpAccessor = httpAccessor;
+        }
 
         public Guid GetUserId()
         {
-            var httpContext = _httpAccessor.HttpContext;                
-            if (httpContext == null)                                    
-                return Guid.Empty;                                      
+            var httpContext = _httpAccessor.HttpContext;
+            if (httpContext == null)
+                return Guid.Empty;
 
-            var cookie = new BasketCookie(httpContext.Request.Cookies); 
-            if (!cookie.Exists())                                       
-                return Guid.Empty;                                      
+            var cookie = new BasketCookie(httpContext.Request.Cookies);
+            if (!cookie.Exists())
+                return Guid.Empty;
 
-            var service = new CheckoutCookieService(cookie.GetValue()); 
-            return service.UserId;                                      
+            var service = new CheckoutCookieService(cookie.GetValue());
+            return service.UserId;
         }
     }
 }

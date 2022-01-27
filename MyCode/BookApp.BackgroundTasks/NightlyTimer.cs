@@ -31,6 +31,5 @@ namespace BookApp.BackgroundTasks
             return new TimeSpan(1, 0, 0, 0).Subtract(nowAsEdtTime.TimeOfDay)
                 .Add(TimeSpan.FromHours(HourToTriggerOn));
         }
-
     }
 }

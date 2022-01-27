@@ -20,7 +20,7 @@ namespace BookApp.UI.Controllers
         {
             var bookList = (await context.DapperBookListQueryAsync(options)).ToList();
             options.SetupRestOfDto(bookList.Count);
-            
+
             SetupTraceInfo();
 
             return View(new BookListNoCountCombinedDto(options, bookList));

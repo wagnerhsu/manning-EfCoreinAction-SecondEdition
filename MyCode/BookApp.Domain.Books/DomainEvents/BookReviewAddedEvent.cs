@@ -7,8 +7,8 @@ using GenericEventRunner.DomainParts;
 namespace BookApp.Domain.Books.DomainEvents
 {
     public class BookReviewAddedEvent : IEntityEvent
-    { 
-        public BookReviewAddedEvent(int numStars, Action<int,double> updateReviewCachedValues)
+    {
+        public BookReviewAddedEvent(int numStars, Action<int, double> updateReviewCachedValues)
         {
             NumStars = numStars;
 

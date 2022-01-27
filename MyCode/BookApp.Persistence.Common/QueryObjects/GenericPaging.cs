@@ -18,8 +18,7 @@ namespace BookApp.Persistence.Common.QueryObjects
             if (pageNumZeroStart != 0)
                 query = query.Skip(pageNumZeroStart * pageSize);
 
-            return query.Take(pageSize); 
+            return query.Take(pageSize);
         }
-
     }
 }

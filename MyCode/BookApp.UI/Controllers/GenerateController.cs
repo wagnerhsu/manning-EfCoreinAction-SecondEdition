@@ -25,7 +25,6 @@ namespace BookApp.UI.Controllers
             _context = context;
         }
 
-
         // GET
         public IActionResult Index()
         {

@@ -21,5 +21,4 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
         [Required(AllowEmptyStrings = false)]
         public string PromotionalText { get; set; }
     }
-
 }

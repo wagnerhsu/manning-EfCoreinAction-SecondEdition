@@ -11,7 +11,6 @@ using BookApp.Infrastructure.LoggingServices;
 using BookApp.Persistence.CosmosDb.Books;
 using BookApp.ServiceLayer.DisplayCommon.Books;
 using Microsoft.Azure.Cosmos;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 
@@ -40,8 +39,8 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
             }
         }
 
-        public static async Task<IEnumerable<CosmosBook>> 
-            CosmosDirectQueryAsync(this CosmosDbContext context, 
+        public static async Task<IEnumerable<CosmosBook>>
+            CosmosDirectQueryAsync(this CosmosDbContext context,
                 SortFilterPageOptions options, string databaseName)
         {
             var container = context.GetCosmosContainerFromDbContext(databaseName);
@@ -67,22 +66,21 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
             }
         }
 
-        private static string BuildQueryString              
-            (SortFilterPageOptions options, bool justCount) 
+        private static string BuildQueryString
+            (SortFilterPageOptions options, bool justCount)
         {
-            var selectOptTop = FormSelectPart(options, justCount); 
-            var filter = FormFilter(options); 
-            if (justCount)                    
-                return selectOptTop + filter; 
+            var selectOptTop = FormSelectPart(options, justCount);
+            var filter = FormFilter(options);
+            if (justCount)
+                return selectOptTop + filter;
 
             var sort = FormSort(options);
 
             var skipRows = options.PageSize * (options.PageNum - 1);
             var paging = $" OFFSET {skipRows} LIMIT {options.PageSize}";
 
-            return selectOptTop + filter   
-                + sort + paging + "\n"; 
-
+            return selectOptTop + filter
+                + sort + paging + "\n";
         }
 
         private static string FormFilter(SortFilterPageOptions options)
@@ -91,14 +89,16 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
             {
                 case BooksFilterBy.NoFilter:
                     return null;
+
                 case BooksFilterBy.ByVotes:
                     return $" WHERE c.ReviewsAverageVotes > {options.FilterValue} ";
+
                 case BooksFilterBy.ByTags:
                     return $" WHERE CONTAINS(c.TagsString, '| {options.FilterValue} |') ";
-                    //return $" JOIN f in c.Tags WHERE f.TagId = '{options.FilterValue}'";
+                //return $" JOIN f in c.Tags WHERE f.TagId = '{options.FilterValue}'";
                 case BooksFilterBy.ByPublicationYear:
-                    return options.FilterValue == DisplayConstants.AllBooksNotPublishedString 
-                        ? $" WHERE c.PublishedOn > '{DateTime.UtcNow:yyyy-MM-dd}' " 
+                    return options.FilterValue == DisplayConstants.AllBooksNotPublishedString
+                        ? $" WHERE c.PublishedOn > '{DateTime.UtcNow:yyyy-MM-dd}' "
                         : $" WHERE c.YearPublished = {options.FilterValue} AND c.PublishedOn < '{DateTime.UtcNow:yyyy-MM-dd}' ";
             }
             throw new NotImplementedException();
@@ -111,12 +111,16 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
             {
                 case OrderByOptions.SimpleOrder:
                     return start + " c.BookId DESC";
+
                 case OrderByOptions.ByVotes:
                     return start + " c.ReviewsAverageVotes DESC";
+
                 case OrderByOptions.ByPublicationDate:
                     return start + " c.PublishedOn DESC";
+
                 case OrderByOptions.ByPriceLowestFirst:
                     return start + " c.ActualPrice ";
+
                 case OrderByOptions.ByPriceHighestFirst:
                     return start + " c.ActualPrice DESC ";
             }
@@ -128,7 +132,6 @@ namespace BookApp.ServiceLayer.CosmosDirect.Books.Services
             if (justCount)
                 return "SELECT value COUNT(c) FROM c";
 
-
             return
 @"SELECT c.BookId, c.Title, c.PublishedOn, c.EstimatedDate, c.YearPublished,
 c.OrgPrice, c.ActualPrice, c.PromotionalText, c.ManningBookUrl,
@@ -136,6 +139,5 @@ c.AuthorsOrdered, c.ReviewsCount, c.ReviewsAverageVotes, c.Tags, c.TagsString
 FROM c
 ";
         }
-
     }
 }

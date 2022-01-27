@@ -6,19 +6,19 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace BookApp.Persistence.EfCoreSql.Orders
 {
-    public class DesignTimeContextFactory : IDesignTimeDbContextFactory<OrderDbContext>          
+    public class DesignTimeContextFactory : IDesignTimeDbContextFactory<OrderDbContext>
     {
-        private const string connectionString =               
+        private const string connectionString =
             "Server=(localdb)\\mssqllocaldb;Database=EfCoreInActionDb2-Part3;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public OrderDbContext CreateDbContext(string[] args)   
+        public OrderDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder =                              
-                new DbContextOptionsBuilder<OrderDbContext>(); 
+            var optionsBuilder =
+                new DbContextOptionsBuilder<OrderDbContext>();
             optionsBuilder.UseSqlServer(connectionString, dbOptions =>
-                dbOptions.MigrationsHistoryTable("OrderMigrationHistoryName"));    
+                dbOptions.MigrationsHistoryTable("OrderMigrationHistoryName"));
 
-            return new OrderDbContext(optionsBuilder.Options); 
+            return new OrderDbContext(optionsBuilder.Options);
         }
     }
 }

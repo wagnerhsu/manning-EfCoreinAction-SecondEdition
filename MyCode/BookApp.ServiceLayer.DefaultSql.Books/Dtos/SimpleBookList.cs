@@ -12,6 +12,5 @@ namespace BookApp.ServiceLayer.DefaultSql.Books.Dtos
         public int BookId { get; set; }
         public string Title { get; set; }
         public DateTime LastUpdatedUtc { get; set; }
-
     }
 }

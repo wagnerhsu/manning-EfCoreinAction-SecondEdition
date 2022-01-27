@@ -6,7 +6,7 @@ using BookApp.Domain.Orders.SupportTypes;
 
 namespace BookApp.Domain.Orders
 {
-    public class LineItem 
+    public class LineItem
     {
         internal LineItem(OrderBookDto bookOrder, byte lineNum)
         {
@@ -20,11 +20,12 @@ namespace BookApp.Domain.Orders
         /// <summary>
         /// Used by EF Core
         /// </summary>
-        private LineItem() { }
+        private LineItem()
+        { }
 
         public int LineItemId { get; private set; }
 
-        [Range(1,5, ErrorMessage = "This order is over the limit of 5 books.")] 
+        [Range(1, 5, ErrorMessage = "This order is over the limit of 5 books.")]
         public byte LineNum { get; private set; }
 
         public short NumBooks { get; private set; }
@@ -42,5 +43,4 @@ namespace BookApp.Domain.Orders
 
         public BookView BookView { get; private set; }
     }
-
 }

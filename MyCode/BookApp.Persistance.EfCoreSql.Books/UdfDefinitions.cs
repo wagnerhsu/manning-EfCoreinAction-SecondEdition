@@ -29,6 +29,5 @@ namespace BookApp.Persistence.EfCoreSql.Books
         {
             return false;
         }
-
     }
 }

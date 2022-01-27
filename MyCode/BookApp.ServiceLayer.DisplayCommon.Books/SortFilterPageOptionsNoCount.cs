@@ -3,7 +3,6 @@
 
 namespace BookApp.ServiceLayer.DisplayCommon.Books
 {
-
     public class SortFilterPageOptionsNoCount : ISortFilterPage
     {
         public const int DefaultPageSize = 100;   //default page size is 100
@@ -11,7 +10,7 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         /// <summary>
         /// This holds the possible page sizes
         /// </summary>
-        public int[] PageSizes = new[] {5, 10, 20, 50, 100, 500, 1000};
+        public int[] PageSizes = new[] { 5, 10, 20, 50, 100, 500, 1000 };
 
         public OrderByOptions OrderByOptions { get; set; }
 
@@ -32,10 +31,9 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         public bool NextPageValid { get; private set; }
 
         /// <summary>
-        /// This holds the state of the key parts of the SortFilterPage parts 
+        /// This holds the state of the key parts of the SortFilterPage parts
         /// </summary>
         public string PrevCheckState { get; set; }
-
 
         public void SetupRestOfDto(int numEntriesRead)
         {
@@ -63,7 +61,7 @@ namespace BookApp.ServiceLayer.DisplayCommon.Books
         /// <returns></returns>
         private string GenerateCheckState()
         {
-            return $"{(int) FilterBy},{FilterValue},{PageSize}";
+            return $"{(int)FilterBy},{FilterValue},{PageSize}";
         }
     }
 }

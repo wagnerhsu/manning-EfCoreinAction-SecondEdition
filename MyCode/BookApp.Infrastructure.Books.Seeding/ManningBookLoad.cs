@@ -20,7 +20,7 @@ namespace BookApp.Infrastructure.Books.Seeding
         private const string ManningUrlWithParam = "https://www.manning.com/books/{0}?a_aid=su4utaraxuTre8tuthup";
 
         public const string PublisherString = "Manning publications";
-        const string OriginalBooksTag = "Manning books";
+        private const string OriginalBooksTag = "Manning books";
 
         private readonly string _fileDir;
         private readonly string _summarySearchString;
@@ -117,7 +117,7 @@ namespace BookApp.Infrastructure.Books.Seeding
             //- With chapters selected by ...
             //- contributions by
             //- Author1, Ph.D.
-            //- null 
+            //- null
 
             if (json.authorshipDisplay == null)
                 return new string[0];
@@ -126,7 +126,7 @@ namespace BookApp.Infrastructure.Books.Seeding
                 ? json.authorshipDisplay.Substring(withChaptersBy.Length)
                 : json.authorshipDisplay;
 
-            var breakIndex = authorString.IndexOf("<"); //<br><i>Foreword by 
+            var breakIndex = authorString.IndexOf("<"); //<br><i>Foreword by
             if (breakIndex > 0)
                 authorString = authorString.Substring(0, breakIndex);
             var editedIndex = authorString.IndexOf("Edited by");

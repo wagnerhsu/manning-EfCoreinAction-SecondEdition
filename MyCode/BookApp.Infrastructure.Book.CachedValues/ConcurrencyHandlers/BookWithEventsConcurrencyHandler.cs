@@ -17,7 +17,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
             var dbUpdateEx = ex as DbUpdateConcurrencyException; //#B
             if (dbUpdateEx == null) //#C
                 return null; //#C
-            
+
             //There could be multiple books if there was a bulk upload. Unusual, but best to handle it.
             foreach (var entry in dbUpdateEx.Entries) //#D
             {
@@ -49,6 +49,7 @@ namespace BookApp.Infrastructure.Books.CachedValues.ConcurrencyHandlers
 
             return new StatusGenericHandler(); //#K
         }
+
         /******************************************************************
         #A This extension method handles the Reviews and Author cached values concurrency issues
         #B We cast the exception to a DbUpdateConcurrencyException

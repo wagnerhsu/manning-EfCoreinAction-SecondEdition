@@ -1,14 +1,14 @@
 ﻿/**********************************************************************
  * LoggingDisplay handles the acquiring and display of the logs
- * 
+ *
  * First created: 2016/09/22
- * 
+ *
  * Under the MIT License (MIT)
  *
  * Written by Jon Smith : GitHub JonPSmith, www.thereformedprogrammer.net
  **********************************************************************/
 
-var LoggingDisplay = (function($) {
+var LoggingDisplay = (function ($) {
     'use strict';
 
     var logApiUrl;
@@ -64,19 +64,19 @@ var LoggingDisplay = (function($) {
         for (var i = 0; i < logs.requestLogs.length; i++) {
             if (displayType !== 'sql' || logs.requestLogs[i].isDb)
                 body +=
-'<div class="card">'+
-    '<div class="card-header text-overflow-dots">'+
-        '<a class="card-link" data-toggle="collapse" href="#collapse'+i+'">'+
-              '<span class="' + setContextualColors(logs.requestLogs[i].logLevel) + '">' + logs.requestLogs[i].logLevel + ':&nbsp;</span>' +
-                   logs.requestLogs[i].eventString + 
-                '</a>' +
-    '</div>'+
-    '<div id="collapse' + i +'" class="collapse" data-parent="#log-accordion">'+
-        '<div class="card-body white-space-pre">'+
-            logs.requestLogs[i].eventString+
-        '</div>'+
-    '</div>'+
-'</div>';
+                    '<div class="card">' +
+                    '<div class="card-header text-overflow-dots">' +
+                    '<a class="card-link" data-toggle="collapse" href="#collapse' + i + '">' +
+                    '<span class="' + setContextualColors(logs.requestLogs[i].logLevel) + '">' + logs.requestLogs[i].logLevel + ':&nbsp;</span>' +
+                    logs.requestLogs[i].eventString +
+                    '</a>' +
+                    '</div>' +
+                    '<div id="collapse' + i + '" class="collapse" data-parent="#log-accordion">' +
+                    '<div class="card-body white-space-pre">' +
+                    logs.requestLogs[i].eventString +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
         }
         body += '</div>';
         $logModalBody.html(body);
@@ -87,14 +87,14 @@ var LoggingDisplay = (function($) {
             url: logApiUrl,
             data: { traceIdentifier: traceIdentifier }
         })
-        .done(function (data) {
-            logs = data;
-            fillModalBody();
-            showModal();
-        })
-        .fail(function () {
-            alert("error");
-        });
+            .done(function (data) {
+                logs = data;
+                fillModalBody();
+                showModal();
+            })
+            .fail(function () {
+                alert("error");
+            });
     }
 
     function startModal() {
@@ -109,7 +109,7 @@ var LoggingDisplay = (function($) {
 
     //public parts
     return {
-        initialise: function(exLogApiUrl, traceIdentifier, numLogs) {
+        initialise: function (exLogApiUrl, traceIdentifier, numLogs) {
             logApiUrl = exLogApiUrl;
 
             setupTrace(traceIdentifier, numLogs);
@@ -117,7 +117,7 @@ var LoggingDisplay = (function($) {
             //setup the main events
             $showLogsLink.unbind('click')
                 .bind('click',
-                    function() {
+                    function () {
                         startModal();
                     });
             $showLogsLink.removeClass('d-none');
@@ -129,7 +129,7 @@ var LoggingDisplay = (function($) {
                     });
 
             $('#all-select').on('click',
-                function() {
+                function () {
                     fillModalBody('all');
                 });
             $('#sql-select').on('click',
@@ -138,7 +138,7 @@ var LoggingDisplay = (function($) {
                 });
         },
 
-        newTrace: function(traceIdentifier, numLogs) {
+        newTrace: function (traceIdentifier, numLogs) {
             setupTrace(traceIdentifier, numLogs);
         }
     };
