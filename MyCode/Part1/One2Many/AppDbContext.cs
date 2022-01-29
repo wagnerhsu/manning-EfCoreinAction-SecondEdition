@@ -2,11 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace One2One
+using Microsoft.EntityFrameworkCore;
+
+namespace One2Many;
+
+public class AppDbContext : DbContext
 {
-    public class Book
+    public DbSet<Book> Books { get; set; }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        public int BookId { get; set; }
-        public PriceOffer Promotion { get; set; }
     }
 }

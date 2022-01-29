@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace One2One
+namespace Many2Many
 {
-    public class Book
+    public class Tag
     {
-        public int BookId { get; set; }
-        public PriceOffer Promotion { get; set; }
+        public int TagId { get; set; }
+
+        public ICollection<Book> Books { get; set; }
     }
 }

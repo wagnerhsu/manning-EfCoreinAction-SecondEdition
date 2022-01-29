@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstEfCoreApp", "MyFirst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{1E5A7146-6F32-494E-886A-F61EDCAB2C4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "One2One", "One2One\One2One.csproj", "{05CCE9D8-574D-422A-B986-5C8E93E65DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "One2One", "One2One\One2One.csproj", "{05CCE9D8-574D-422A-B986-5C8E93E65DF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BizDbAccess", "BizDbAccess\BizDbAccess.csproj", "{F8BC7059-1742-47B4-854A-23672F39F335}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{EBE5B1DB-8290-488D-B453-EE118C43AC45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{7B310029-0A53-4BD3-8CDD-B7D74B7CD3B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "One2Many", "One2Many\One2Many.csproj", "{FC7F4DC2-9F4E-4C68-BC38-439079D0ED64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Many2Many", "Many2Many\Many2Many.csproj", "{0C8586D2-F769-4FBE-9B3F-56E22B2BBCD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{7B310029-0A53-4BD3-8CDD-B7D74B7CD3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B310029-0A53-4BD3-8CDD-B7D74B7CD3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B310029-0A53-4BD3-8CDD-B7D74B7CD3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC7F4DC2-9F4E-4C68-BC38-439079D0ED64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC7F4DC2-9F4E-4C68-BC38-439079D0ED64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC7F4DC2-9F4E-4C68-BC38-439079D0ED64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC7F4DC2-9F4E-4C68-BC38-439079D0ED64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C8586D2-F769-4FBE-9B3F-56E22B2BBCD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C8586D2-F769-4FBE-9B3F-56E22B2BBCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C8586D2-F769-4FBE-9B3F-56E22B2BBCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C8586D2-F769-4FBE-9B3F-56E22B2BBCD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
