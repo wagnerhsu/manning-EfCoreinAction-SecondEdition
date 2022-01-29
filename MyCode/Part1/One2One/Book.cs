@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace One2One
 {
-    internal class Book
+    public class Book
     {
         public int BookId { get; set; }
     }

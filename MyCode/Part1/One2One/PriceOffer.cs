@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace One2One
 {
-    internal class PriceOffer
+    public class PriceOffer
     {
         public int PriceOfferId { get; set; }
         public int BookId { get; set; }
