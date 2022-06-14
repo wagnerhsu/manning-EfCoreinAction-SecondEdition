@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 using ServiceLayer.BackgroundServices;
 
 namespace BookApp
@@ -15,6 +17,13 @@ namespace BookApp
     {
         public static async Task Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Async(c => c.Seq("http://localhost:5341"))
+                .WriteTo.Async(c => c.Console())
+                .CreateLogger();
             var host = CreateHostBuilder(args).Build();
             //This migrates the database and adds any seed data as required
             await host.SetupDatabaseAsync();
@@ -23,6 +32,7 @@ namespace BookApp
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 //see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#add-providers
                 .ConfigureLogging(logging =>
                 {

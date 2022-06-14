@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0.0</InformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,6 +40,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.sinks.Seq" Version="5.1.1" />
   </ItemGroup>
 
   <ItemGroup>

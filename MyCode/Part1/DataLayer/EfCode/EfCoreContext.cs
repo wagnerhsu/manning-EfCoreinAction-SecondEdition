@@ -2,21 +2,27 @@
 // Licensed under MIT license. See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 using DataLayer.EfClasses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataLayer.EfCode
 {
     public class EfCoreContext : DbContext
     {
+        private readonly ILogger<EfCoreContext> _logger;
         private readonly Guid _userId;                                     //#A
 
         public EfCoreContext(DbContextOptions<EfCoreContext> options,      //#B
+            ILogger<EfCoreContext> logger,
             IUserIdService userIdService = null)                           //#C
             : base(options)
         {
+            _logger = logger;
             _userId = userIdService?.GetUserId()                           //#D
-                       ?? new ReplacementUserIdService().GetUserId();      //#D
+                      ?? new ReplacementUserIdService().GetUserId();      //#D
+            _logger.LogInformation("EfCoreContext.ctor");
         }
 
         public DbSet<Book> Books { get; set; }
@@ -27,22 +33,29 @@ namespace DataLayer.EfCode
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) //#E
         {
-            modelBuilder.Entity<BookAuthor>() 
-                .HasKey(x => new {x.BookId, x.AuthorId});
+            modelBuilder.Entity<BookAuthor>()
+                .HasKey(x => new { x.BookId, x.AuthorId });
 
             modelBuilder.Entity<LineItem>()
-                .HasOne(p => p.ChosenBook) 
+                .HasOne(p => p.ChosenBook)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Book>()                                    //#F
                 .HasQueryFilter(p => !p.SoftDeleted);                      //#F
-                                                            
+
             modelBuilder.Entity<Order>()                                   //#G
                 .HasQueryFilter(x => x.CustomerId == _userId);             //#G
-        } 
+        }
+
+        public override void Dispose()
+        {
+            _logger.LogInformation("EfCoreContext.Dispose");
+            base.Dispose();
+        }
     }
 }
+
 /*********************************************************
 #A This property holds the UserId to filter the Order entity class by
 #B This is the normal options for setting up the application's DbContext
@@ -55,13 +68,13 @@ namespace DataLayer.EfCode
 
 /******************************************************************************
 * NOTES ON MIGRATION:
-* 
+*
 * see https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/migrations?tabs=visual-studio
-* 
+*
 * The following NuGet libraries must be loaded
 * 1. Add to BookApp: "Microsoft.EntityFrameworkCore.Tools"
 * 2. Add to DataLayer: "Microsoft.EntityFrameworkCore.SqlServer" (or another database provider)
-* 
+*
 * 2. Using Package Manager Console commands
 * The steps are:
 * a) Make sure the default project is BookApp
@@ -69,7 +82,7 @@ namespace DataLayer.EfCode
 *    Add-Migration NameForMigration -Project DataLayer
 * c) Use PMC command
 *    Update-database (or migrate on startup)
-*    
+*
 * If you want to start afresh then:
 * a) Delete the current database
 * b) Delete all the class in the Migration directory
