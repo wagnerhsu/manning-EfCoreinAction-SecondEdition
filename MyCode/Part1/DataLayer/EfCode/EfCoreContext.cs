@@ -53,6 +53,12 @@ namespace DataLayer.EfCode
             _logger.LogInformation("EfCoreContext.Dispose");
             base.Dispose();
         }
+
+        public override ValueTask DisposeAsync()
+        {
+            _logger.LogInformation("EfCoreContext.DisposeAsync");
+            return base.DisposeAsync();
+        }
     }
 }
 

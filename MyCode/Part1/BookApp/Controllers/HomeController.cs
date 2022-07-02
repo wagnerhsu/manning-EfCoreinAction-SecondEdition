@@ -16,15 +16,18 @@ namespace BookApp.Controllers
     public class HomeController : BaseTraceController
     {
         private readonly EfCoreContext _context;
+        private readonly ITestService _testService;
 
-        public HomeController(EfCoreContext context)
+        public HomeController(EfCoreContext context, ITestService testService)
         {
             _context = context;
+            _testService = testService;
         }
 
         public async Task<IActionResult> Index //#A
             (SortFilterPageOptions options)
         {
+            _testService.Test();
             var listService =
                 new ListBooksService(_context);
 

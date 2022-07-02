@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
+﻿// Copyright (c) 2020 Jon P Smith, GitHub: JonPSmith, web: http://www.thereformedprogrammer.net/
 // Licensed under MIT license. See License.txt in the project root for license information.
 
 using System.Text.Json.Serialization;
@@ -32,7 +32,7 @@ namespace BookApp
         {
             services.AddControllersWithViews() //#B
                 .AddRazorRuntimeCompilation() //This recompile a razor page if you edit it while the app is running
-                //Added this because my logs display needs the enum as a string
+                                              //Added this because my logs display needs the enum as a string
                 .AddJsonOptions(opts =>
                 {
                     opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -50,14 +50,16 @@ namespace BookApp
             services.RegisterBizDbAccessDi();
             services.RegisterBizLogicDi();
             services.RegisterServiceLayerDi();
+
+            services.AddSingleton<ITestService, TestService>();
         }
+
         /****************************************************************
         #A This method in the Startup class sets up services
         #B Sets up a series of services to use with controllers and Views
         #C You get the connection string from the appsettings.json file, which can be changed when you deploy.
-        #D Configures the application�s DbContext to use SQL Server and provide the connection         
+        #D Configures the application抯 DbContext to use SQL Server and provide the connection
          ****************************************************************/
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAccessor)
