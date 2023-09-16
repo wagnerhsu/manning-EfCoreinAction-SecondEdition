@@ -4,24 +4,23 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLayer.EfCode
+namespace DataLayer.EfCode;
+
+public class ValidationDbContextServiceProvider : IServiceProvider
 {
-    public class ValidationDbContextServiceProvider : IServiceProvider
+    private readonly DbContext _currContext;
+
+    public ValidationDbContextServiceProvider(DbContext currContext)
     {
-        private readonly DbContext _currContext;
+        _currContext = currContext;
+    }
 
-        public ValidationDbContextServiceProvider(DbContext currContext)
+    public object GetService(Type serviceType)
+    {
+        if (serviceType == typeof(DbContext))
         {
-            _currContext = currContext;
+            return _currContext;
         }
-
-        public object GetService(Type serviceType)
-        {
-            if (serviceType == typeof(DbContext))
-            {
-                return _currContext;
-            }
-            return null;
-        }
+        return null;
     }
 }

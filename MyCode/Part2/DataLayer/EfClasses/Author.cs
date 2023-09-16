@@ -4,23 +4,22 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataLayer.EfClasses
+namespace DataLayer.EfClasses;
+
+public class Author
 {
-    public class Author
-    {
-        public const int NameLength = 100;
+    public const int NameLength = 100;
 
-        public int AuthorId { get; set; }
+    public int AuthorId { get; set; }
 
-        [Required]
-        [MaxLength(NameLength)]
-        public string Name { get; set; }
+    [Required]
+    [MaxLength(NameLength)]
+    public string Name { get; set; }
 
-        //------------------------------
-        //Relationships
+    //------------------------------
+    //Relationships
 
-        public ICollection<BookAuthor> 
-            BooksLink { get; set; }
-    }
-
+    public ICollection<BookAuthor>
+        BooksLink
+    { get; set; }
 }

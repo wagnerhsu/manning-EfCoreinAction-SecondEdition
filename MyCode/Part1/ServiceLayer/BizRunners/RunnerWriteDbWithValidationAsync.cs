@@ -8,45 +8,44 @@ using System.Threading.Tasks;
 using BizLogic.GenericInterfaces;
 using DataLayer.EfCode;
 
-namespace ServiceLayer.BizRunners
+namespace ServiceLayer.BizRunners;
+
+public class RunnerWriteDbWithValidationAsync<TIn, TOut> //#A
 {
-    public class RunnerWriteDbWithValidationAsync<TIn, TOut> //#A
+    private readonly IBizActionAsync<TIn, TOut> _actionClass; //#B
+    private readonly EfCoreContext _context;
+
+    public RunnerWriteDbWithValidationAsync(
+        IBizActionAsync<TIn, TOut> actionClass, //#C
+        EfCoreContext context)
     {
-        private readonly IBizActionAsync<TIn, TOut> _actionClass; //#B
-        private readonly EfCoreContext _context;
-
-        public RunnerWriteDbWithValidationAsync(
-            IBizActionAsync<TIn, TOut> actionClass, //#C
-            EfCoreContext context)
-        {
-            _context = context;
-            _actionClass = actionClass;
-        }
-
-        public IImmutableList<ValidationResult>
-            Errors { get; private set; }
-
-        public bool HasErrors => Errors.Any();
-
-        public async Task<TOut> //#D
-            RunActionAsync(TIn dataIn) //#E
-        {
-            var result = await //#F
-                _actionClass.ActionAsync(dataIn) //#G
-                    .ConfigureAwait(false); //#H
-            Errors = _actionClass.Errors;
-            if (!HasErrors)
-            {
-                Errors =  
-                    (await _context //#I
-                      .SaveChangesWithValidationAsync() //#J
-                      .ConfigureAwait(false)) //#K
-                        .ToImmutableList();
-            }
-            return result;
-        }
+        _context = context;
+        _actionClass = actionClass;
     }
-    /*********************************************************
-     * 
-     * ******************************************************/
+
+    public IImmutableList<ValidationResult>
+        Errors { get; private set; }
+
+    public bool HasErrors => Errors.Any();
+
+    public async Task<TOut> //#D
+        RunActionAsync(TIn dataIn) //#E
+    {
+        var result = await //#F
+            _actionClass.ActionAsync(dataIn) //#G
+                .ConfigureAwait(false); //#H
+        Errors = _actionClass.Errors;
+        if (!HasErrors)
+        {
+            Errors =  
+                (await _context //#I
+                    .SaveChangesWithValidationAsync() //#J
+                    .ConfigureAwait(false)) //#K
+                .ToImmutableList();
+        }
+        return result;
+    }
 }
+/*********************************************************
+ * 
+ * ******************************************************/

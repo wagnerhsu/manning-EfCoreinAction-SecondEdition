@@ -7,58 +7,57 @@ using DataLayer.EfClasses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace DataLayer.EfCode
+namespace DataLayer.EfCode;
+
+public class EfCoreContext : DbContext
 {
-    public class EfCoreContext : DbContext
+    private readonly ILogger<EfCoreContext> _logger;
+    private readonly Guid _userId;                                     //#A
+
+    public EfCoreContext(DbContextOptions<EfCoreContext> options,      //#B
+        ILogger<EfCoreContext> logger,
+        IUserIdService userIdService = null)                           //#C
+        : base(options)
     {
-        private readonly ILogger<EfCoreContext> _logger;
-        private readonly Guid _userId;                                     //#A
+        _logger = logger;
+        _userId = userIdService?.GetUserId()                           //#D
+                  ?? new ReplacementUserIdService().GetUserId();      //#D
+        _logger.LogInformation("EfCoreContext.ctor");
+    }
 
-        public EfCoreContext(DbContextOptions<EfCoreContext> options,      //#B
-            ILogger<EfCoreContext> logger,
-            IUserIdService userIdService = null)                           //#C
-            : base(options)
-        {
-            _logger = logger;
-            _userId = userIdService?.GetUserId()                           //#D
-                      ?? new ReplacementUserIdService().GetUserId();      //#D
-            _logger.LogInformation("EfCoreContext.ctor");
-        }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<PriceOffer> PriceOffers { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<PriceOffer> PriceOffers { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<Order> Orders { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder) //#E
+    {
+        modelBuilder.Entity<BookAuthor>()
+            .HasKey(x => new { x.BookId, x.AuthorId });
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) //#E
-        {
-            modelBuilder.Entity<BookAuthor>()
-                .HasKey(x => new { x.BookId, x.AuthorId });
+        modelBuilder.Entity<LineItem>()
+            .HasOne(p => p.ChosenBook)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<LineItem>()
-                .HasOne(p => p.ChosenBook)
-                .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Book>()                                    //#F
+            .HasQueryFilter(p => !p.SoftDeleted);                      //#F
 
-            modelBuilder.Entity<Book>()                                    //#F
-                .HasQueryFilter(p => !p.SoftDeleted);                      //#F
+        modelBuilder.Entity<Order>()                                   //#G
+            .HasQueryFilter(x => x.CustomerId == _userId);             //#G
+    }
 
-            modelBuilder.Entity<Order>()                                   //#G
-                .HasQueryFilter(x => x.CustomerId == _userId);             //#G
-        }
+    public override void Dispose()
+    {
+        _logger.LogInformation("EfCoreContext.Dispose");
+        base.Dispose();
+    }
 
-        public override void Dispose()
-        {
-            _logger.LogInformation("EfCoreContext.Dispose");
-            base.Dispose();
-        }
-
-        public override ValueTask DisposeAsync()
-        {
-            _logger.LogInformation("EfCoreContext.DisposeAsync");
-            return base.DisposeAsync();
-        }
+    public override ValueTask DisposeAsync()
+    {
+        _logger.LogInformation("EfCoreContext.DisposeAsync");
+        return base.DisposeAsync();
     }
 }
 

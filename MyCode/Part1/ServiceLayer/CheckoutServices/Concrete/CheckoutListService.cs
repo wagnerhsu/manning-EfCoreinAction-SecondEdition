@@ -9,46 +9,45 @@ using BizLogic.Orders;
 using DataLayer.EfCode;
 using Microsoft.AspNetCore.Http;
 
-namespace ServiceLayer.CheckoutServices.Concrete
+namespace ServiceLayer.CheckoutServices.Concrete;
+
+public class CheckoutListService
 {
-    public class CheckoutListService
+    private readonly EfCoreContext _context;
+    private readonly IRequestCookieCollection _cookiesIn;
+
+    public CheckoutListService(EfCoreContext context, IRequestCookieCollection cookiesIn)
     {
-        private readonly EfCoreContext _context;
-        private readonly IRequestCookieCollection _cookiesIn;
+        _context = context;
+        _cookiesIn = cookiesIn;
+    }
 
-        public CheckoutListService(EfCoreContext context, IRequestCookieCollection cookiesIn)
+    public ImmutableList<CheckoutItemDto> GetCheckoutList()
+    {
+        var cookieHandler = new BasketCookie(_cookiesIn);
+        var service = new CheckoutCookieService(cookieHandler.GetValue());
+
+        return GetCheckoutList(service.LineItems);
+    }
+
+    public ImmutableList<CheckoutItemDto> GetCheckoutList(IImmutableList<OrderLineItem> lineItems)
+    {
+        var result = new List<CheckoutItemDto>();
+        foreach (var lineItem in lineItems)
         {
-            _context = context;
-            _cookiesIn = cookiesIn;
-        }
-
-        public ImmutableList<CheckoutItemDto> GetCheckoutList()
-        {
-            var cookieHandler = new BasketCookie(_cookiesIn);
-            var service = new CheckoutCookieService(cookieHandler.GetValue());
-
-            return GetCheckoutList(service.LineItems);
-        }
-
-        public ImmutableList<CheckoutItemDto> GetCheckoutList(IImmutableList<OrderLineItem> lineItems)
-        {
-            var result = new List<CheckoutItemDto>();
-            foreach (var lineItem in lineItems)
+            result.Add(_context.Books.Select(book => new CheckoutItemDto
             {
-                result.Add(_context.Books.Select(book => new CheckoutItemDto
-                {
-                    BookId = book.BookId,
-                    Title = book.Title,
-                    AuthorsName = string.Join(", ",
-                        book.AuthorsLink
-                            .OrderBy(q => q.Order)
-                            .Select(q => q.Author.Name)),
-                    BookPrice = book.Promotion == null ? book.Price : book.Promotion.NewPrice,
-                    ImageUrl = book.ImageUrl,
-                    NumBooks = lineItem.NumBooks
-                }).Single(y => y.BookId == lineItem.BookId));
-            }
-            return result.ToImmutableList();
+                BookId = book.BookId,
+                Title = book.Title,
+                AuthorsName = string.Join(", ",
+                    book.AuthorsLink
+                        .OrderBy(q => q.Order)
+                        .Select(q => q.Author.Name)),
+                BookPrice = book.Promotion == null ? book.Price : book.Promotion.NewPrice,
+                ImageUrl = book.ImageUrl,
+                NumBooks = lineItem.NumBooks
+            }).Single(y => y.BookId == lineItem.BookId));
         }
+        return result.ToImmutableList();
     }
 }

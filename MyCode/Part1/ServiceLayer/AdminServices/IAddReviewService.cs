@@ -3,16 +3,15 @@
 
 using DataLayer.EfClasses;
 
-namespace ServiceLayer.AdminServices
+namespace ServiceLayer.AdminServices;
+
+public interface IAddReviewService
 {
-    public interface IAddReviewService
-    {
-        string BookTitle { get; }
+    string BookTitle { get; }
 
-        Review GetBlankReview(int id) //#A
-            ;
+    Review GetBlankReview(int id) //#A
+        ;
 
-        Book AddReviewToBook(Review review)//#D
-            ;
-    }
+    Book AddReviewToBook(Review review)//#D
+        ;
 }

@@ -4,17 +4,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using NetCore.AutoRegisterDi;
 
-namespace BizLogic.AppStart
+namespace BizLogic.AppStart;
+
+public static class NetCoreDiSetupExtensions
 {
-    public static class NetCoreDiSetupExtensions
+    public static void RegisterBizLogicDi(this IServiceCollection services)
     {
-        public static void RegisterBizLogicDi(this IServiceCollection services)
-        {
-            services.RegisterAssemblyPublicNonGenericClasses()
-                .AsPublicImplementedInterfaces();
+        services.RegisterAssemblyPublicNonGenericClasses()
+            .AsPublicImplementedInterfaces();
 
-            //register any services that can't be handled by RegisterAssemblyPublicNonGenericClasses
+        //register any services that can't be handled by RegisterAssemblyPublicNonGenericClasses
 
-        }
     }
 }

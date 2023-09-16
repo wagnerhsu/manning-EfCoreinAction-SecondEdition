@@ -3,13 +3,12 @@
 
 using System;
 
-namespace DataLayer.EfCode
+namespace DataLayer.EfCode;
+
+public class ReplacementUserIdService : IUserIdService
 {
-    public class ReplacementUserIdService : IUserIdService
+    public Guid GetUserId()
     {
-        public Guid GetUserId()
-        {
-            return Guid.Empty;
-        }
+        return Guid.Empty;
     }
 }

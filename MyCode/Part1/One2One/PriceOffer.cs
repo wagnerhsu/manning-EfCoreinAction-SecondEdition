@@ -8,11 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace One2One
+namespace One2One;
+
+public class PriceOffer
 {
-    public class PriceOffer
-    {
-        public int PriceOfferId { get; set; }
-        public int BookId { get; set; }
-    }
+    public int PriceOfferId { get; set; }
+    public int BookId { get; set; }
 }

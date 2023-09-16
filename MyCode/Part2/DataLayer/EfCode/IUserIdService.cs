@@ -3,10 +3,9 @@
 
 using System;
 
-namespace DataLayer.EfCode
+namespace DataLayer.EfCode;
+
+public interface IUserIdService
 {
-    public interface IUserIdService
-    {
-        Guid GetUserId();
-    }
+    Guid GetUserId();
 }

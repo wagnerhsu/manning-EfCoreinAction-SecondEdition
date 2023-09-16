@@ -3,26 +3,25 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace MyFirstEfCoreApp
+namespace MyFirstEfCoreApp;
+
+public class AppDbContext : DbContext
 {
-    public class AppDbContext : DbContext
-    {
-        private const string ConnectionString = //#A
-            @"Server=.;
+    private const string ConnectionString = //#A
+        @"Server=.;
              Database=MyFirstEfCoreDb;
              Trusted_Connection=True";
 
-        public DbSet<Book> Books { get; set; }
+    public DbSet<Book> Books { get; set; }
 
-        protected override void OnConfiguring(
-            DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(ConnectionString); //#B
-        }
+    protected override void OnConfiguring(
+        DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(ConnectionString); //#B
     }
-
-    /********************************************************
-    #A The connection string is used by the SQL Server database provider to find the database
-    #B Using the SQL Server database provider’s UseSqlServer command sets up the options ready for creating the applications’s DBContext
-     ********************************************************/
 }
+
+/********************************************************
+#A The connection string is used by the SQL Server database provider to find the database
+#B Using the SQL Server database provider’s UseSqlServer command sets up the options ready for creating the applications’s DBContext
+ ********************************************************/

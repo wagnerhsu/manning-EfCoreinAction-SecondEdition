@@ -8,29 +8,28 @@ using System.Threading.Tasks;
 using BizLogic.GenericInterfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ServiceLayer.BizRunners
+namespace ServiceLayer.BizRunners;
+
+public class RunnerWriteDbAsync<TIn, TOut>
 {
-    public class RunnerWriteDbAsync<TIn, TOut>
+    private readonly IBizActionAsync<TIn, TOut> _actionClass;
+    private readonly DbContext _context;
+
+    public RunnerWriteDbAsync(IBizActionAsync<TIn, TOut> actionClass, DbContext context)
     {
-        private readonly IBizActionAsync<TIn, TOut> _actionClass;
-        private readonly DbContext _context;
+        _context = context;
+        _actionClass = actionClass;
+    }
 
-        public RunnerWriteDbAsync(IBizActionAsync<TIn, TOut> actionClass, DbContext context)
-        {
-            _context = context;
-            _actionClass = actionClass;
-        }
+    public IImmutableList<ValidationResult> Errors => _actionClass.Errors;
+    public bool HasErrors => _actionClass.HasErrors;
 
-        public IImmutableList<ValidationResult> Errors => _actionClass.Errors;
-        public bool HasErrors => _actionClass.HasErrors;
+    public async Task<TOut> RunActionAsync(TIn dataIn)
+    {
+        var result = await _actionClass.ActionAsync(dataIn).ConfigureAwait(false);
+        if (!HasErrors)
+            await _context.SaveChangesAsync();
 
-        public async Task<TOut> RunActionAsync(TIn dataIn)
-        {
-            var result = await _actionClass.ActionAsync(dataIn).ConfigureAwait(false);
-            if (!HasErrors)
-                await _context.SaveChangesAsync();
-
-            return result;
-        }
+        return result;
     }
 }

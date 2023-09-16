@@ -4,14 +4,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Logger;
 
-namespace BookApp.Controllers
+namespace BookApp.Controllers;
+
+public class LoggerController : Controller
 {
-    public class LoggerController : Controller
+    [HttpGet]
+    public JsonResult GetLog(string traceIdentifier)
     {
-        [HttpGet]
-        public JsonResult GetLog(string traceIdentifier)
-        {
-            return Json(HttpRequestLog.GetHttpRequestLog(traceIdentifier));
-        }
+        return Json(HttpRequestLog.GetHttpRequestLog(traceIdentifier));
     }
 }

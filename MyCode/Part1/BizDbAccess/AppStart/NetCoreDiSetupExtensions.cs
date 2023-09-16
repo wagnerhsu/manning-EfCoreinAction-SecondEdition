@@ -4,17 +4,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using NetCore.AutoRegisterDi;
 
-namespace BizDbAccess.AppStart
+namespace BizDbAccess.AppStart;
+
+public static class NetCoreDiSetupExtensions
 {
-    public static class NetCoreDiSetupExtensions
+    public static void RegisterBizDbAccessDi(this IServiceCollection services)
     {
-        public static void RegisterBizDbAccessDi(this IServiceCollection services)
-        {
-            services.RegisterAssemblyPublicNonGenericClasses()
-                .AsPublicImplementedInterfaces();
+        services.RegisterAssemblyPublicNonGenericClasses()
+            .AsPublicImplementedInterfaces();
 
-            //register any services that can't be handled by RegisterAssemblyPublicNonGenericClasses
+        //register any services that can't be handled by RegisterAssemblyPublicNonGenericClasses
 
-        }
     }
 }

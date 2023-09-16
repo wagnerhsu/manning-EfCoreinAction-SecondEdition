@@ -4,18 +4,17 @@
 using System.Collections.Immutable;
 using DataLayer.EfClasses;
 
-namespace BizLogic.Orders
+namespace BizLogic.Orders;
+
+public class Part1ToPart2Dto
 {
-    public class Part1ToPart2Dto
+    public Part1ToPart2Dto(IImmutableList<OrderLineItem> lineItems, Order order)
     {
-        public Part1ToPart2Dto(IImmutableList<OrderLineItem> lineItems, Order order)
-        {
-            LineItems = lineItems;
-            Order = order;
-        }
-
-        public IImmutableList<OrderLineItem> LineItems { get; private set; }
-
-        public Order Order { get; private set; }
+        LineItems = lineItems;
+        Order = order;
     }
+
+    public IImmutableList<OrderLineItem> LineItems { get; private set; }
+
+    public Order Order { get; private set; }
 }

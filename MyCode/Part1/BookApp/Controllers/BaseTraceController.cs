@@ -4,14 +4,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Logger;
 
-namespace BookApp.Controllers
+namespace BookApp.Controllers;
+
+public abstract class BaseTraceController : Controller
 {
-    public abstract class BaseTraceController : Controller
+    protected void SetupTraceInfo()
     {
-        protected void SetupTraceInfo()
-        {
-            ViewData["TraceIdent"] = HttpContext.TraceIdentifier;
-            ViewData["NumLogs"] = HttpRequestLog.GetHttpRequestLog(HttpContext.TraceIdentifier).RequestLogs.Count;
-        }
+        ViewData["TraceIdent"] = HttpContext.TraceIdentifier;
+        ViewData["NumLogs"] = HttpRequestLog.GetHttpRequestLog(HttpContext.TraceIdentifier).RequestLogs.Count;
     }
 }

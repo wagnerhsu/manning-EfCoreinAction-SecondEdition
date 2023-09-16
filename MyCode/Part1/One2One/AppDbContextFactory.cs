@@ -6,25 +6,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace One2One
-{
-    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
-    {
-        public AppDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            var _configuration = BuildConfiguration();
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("Default"));
-            return new AppDbContext(optionsBuilder.Options);
+namespace One2One;
 
-            IConfiguration BuildConfiguration()
-            {
-                var builder = new ConfigurationBuilder()
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+{
+    public AppDbContext CreateDbContext(string[] args)
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        var _configuration = BuildConfiguration();
+        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("Default"));
+        return new AppDbContext(optionsBuilder.Options);
+
+        IConfiguration BuildConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false);
 
-                return builder.Build();
-            }
+            return builder.Build();
         }
     }
 }

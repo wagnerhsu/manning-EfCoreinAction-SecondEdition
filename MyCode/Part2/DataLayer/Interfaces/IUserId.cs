@@ -3,10 +3,9 @@
 
 using System;
 
-namespace DataLayer.Interfaces
+namespace DataLayer.Interfaces;
+
+public interface IUserId
 {
-    public interface IUserId
-    {
-        Guid UserId { get; }
-    }
+    Guid UserId { get; }
 }

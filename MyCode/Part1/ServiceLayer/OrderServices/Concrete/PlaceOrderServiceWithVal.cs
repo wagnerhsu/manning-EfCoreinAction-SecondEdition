@@ -13,48 +13,47 @@ using Microsoft.AspNetCore.Http;
 using ServiceLayer.BizRunners;
 using ServiceLayer.CheckoutServices.Concrete;
 
-namespace ServiceLayer.OrderServices.Concrete
+namespace ServiceLayer.OrderServices.Concrete;
+
+public class PlaceOrderServiceWithVal
 {
-    public class PlaceOrderServiceWithVal
+    private readonly BasketCookie _basketCookie;
+    private readonly RunnerWriteDbWithValidation<PlaceOrderInDto, Order> _runner;
+
+    public PlaceOrderServiceWithVal(
+        IRequestCookieCollection cookiesIn, 
+        IResponseCookies cookiesOut,
+        EfCoreContext context)
     {
-        private readonly BasketCookie _basketCookie;
-        private readonly RunnerWriteDbWithValidation<PlaceOrderInDto, Order> _runner;
+        _basketCookie = new BasketCookie(cookiesIn, cookiesOut);
+        _runner = new RunnerWriteDbWithValidation<PlaceOrderInDto, Order>(
+            new PlaceOrderAction(
+                new PlaceOrderDbAccess(context)),
+            context);
+    }
 
-        public PlaceOrderServiceWithVal(
-            IRequestCookieCollection cookiesIn, 
-            IResponseCookies cookiesOut,
-            EfCoreContext context)
-        {
-            _basketCookie = new BasketCookie(cookiesIn, cookiesOut);
-            _runner = new RunnerWriteDbWithValidation<PlaceOrderInDto, Order>(
-                new PlaceOrderAction(
-                    new PlaceOrderDbAccess(context)),
-                context);
-        }
+    public IImmutableList<ValidationResult> Errors => _runner.Errors;
 
-        public IImmutableList<ValidationResult> Errors => _runner.Errors;
+    /// <summary>
+    /// This creates the order and, if successful clears the cookie
+    /// </summary>
+    /// <returns>Returns the OrderId, or zero if errors</returns>
+    public int PlaceOrder(bool acceptTAndCs)
+    {
+        var checkoutService = new CheckoutCookieService(
+            _basketCookie.GetValue());
 
-        /// <summary>
-        /// This creates the order and, if successful clears the cookie
-        /// </summary>
-        /// <returns>Returns the OrderId, or zero if errors</returns>
-        public int PlaceOrder(bool acceptTAndCs)
-        {
-            var checkoutService = new CheckoutCookieService(
-                _basketCookie.GetValue());
-
-            var order = _runner.RunAction(
-                new PlaceOrderInDto(acceptTAndCs, 
+        var order = _runner.RunAction(
+            new PlaceOrderInDto(acceptTAndCs, 
                 checkoutService.UserId, checkoutService.LineItems));
 
-            if (_runner.HasErrors) return 0;
+        if (_runner.HasErrors) return 0;
 
-            //successful so clear the cookie line items
-            checkoutService.ClearAllLineItems();
-            _basketCookie.AddOrUpdateCookie(
-                checkoutService.EncodeForCookie());
+        //successful so clear the cookie line items
+        checkoutService.ClearAllLineItems();
+        _basketCookie.AddOrUpdateCookie(
+            checkoutService.EncodeForCookie());
 
-            return order.OrderId;
-        }
+        return order.OrderId;
     }
 }
